@@ -1,12 +1,44 @@
 
 .general-header {
-    background-color: #333;
     color: white;
-    padding: 10px 0;
-}
-ul{
-    list-style-type: none;
-    display: flex;
-    justify-content: space-between;
-    padding: 0px;
+    padding: 5px 0;
+
+    clip-path: polygon(0% 0%, 100% 0%, 100% 57.68%, 42.32% 57.68%, 42.32% 100%, 0% 100%);
+    background-color: #ff0000;
+
+    .tmp{
+        border-radius: 0px 0px 10px 0px;
+        width: 30%;
+        height: 80px;
+    }
+    .nav-bar{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 10px;
+        .logo{
+            font-size: 56px;
+            display: flex;
+            align-items: center;
+            font-family: 'PokemonSolidNormal';
+            color: #FFCB05;
+            text-shadow: 2px 0 #3466AF, -2px 0 #3466AF, 0 2px #3466AF, 0 -2px #3466AF,
+                1px 1px #3466AF, -1px -1px #3466AF, 1px -1px #3466AF, -1px 1px #3466AF;
+        }
+        ul{
+            list-style-type: none;
+            display: flex;
+            justify-content: space-between;
+            padding: 0px;
+
+            .user-info{
+                font-size: 24px;
+                display: flex;
+                align-items: center;
+                .avatar{
+                    margin-left: 10px;
+                }
+            }
+        }
+    }   
 }
