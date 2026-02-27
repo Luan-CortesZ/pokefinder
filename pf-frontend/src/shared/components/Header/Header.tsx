@@ -9,7 +9,7 @@ export default function Header() {
                 <span className="lens lens-red"></span>
                 <span className="lens lens-yellow"></span>
                 <span className="lens lens-green"></span>
-                <span className="logo-sub">Pokémon Mini Games - V.0.0.0</span>
+                <span className="logo-sub">Unofficial Pokémon Mini Games - V.0.0.0</span>
             </div>
 
             <nav className="nav-bar" aria-label="Navigation principale">

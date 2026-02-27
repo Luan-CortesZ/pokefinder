@@ -2,16 +2,21 @@
   display: grid;
   grid-template-areas:
     "header"
-    "main";
-  grid-template-rows: auto 1fr; // Le header prend sa taille naturelle, le main prend le reste
-  min-height: 100vh; // Force le layout à prendre toute la hauteur de l'écran
+    "main"
+    "footer";
+  grid-template-rows: auto 1fr auto; 
+  min-height: 100vh;
 }
 
 .header { 
   grid-area: header; 
 }
 
+.footer { 
+  grid-area: footer; 
+}
+
 .main-content { 
   grid-area: main;
-  overflow-y: auto; // Permet au contenu de défiler si nécessaire
+  overflow-y: auto;
 }
