@@ -24,13 +24,19 @@ export default function Header() {
                             <span className="trainer-label">Trainer</span>
                             <span className="trainer-name">John Doe</span>
                         </div>
-                        <Link to="/profile" className="avatar-link" aria-label="Ouvrir le profil">
+                        <div className="avatar-menu-wrap">
                             <Avatar
                             className='avatar'
                             alt="John Doe"
                             src="/static/images/avatar/1.jpg"
                             sx={{ width: 46, height: 46 }}/>
-                        </Link>
+
+                            <div className="user-dropdown">
+                                <Link to="/" role="menuitem">Home</Link>
+                                <Link to="/profile" role="menuitem">Profile</Link>
+                                <Link to="/profile/pokédex" role="menuitem">Pokédex</Link>
+                            </div>
+                        </div>
                     </li>
                 </ul>
             </nav>
