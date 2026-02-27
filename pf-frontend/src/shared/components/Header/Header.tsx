@@ -1,4 +1,5 @@
 import { Avatar } from '@mui/material';
+import { Link } from 'react-router-dom';
 import './styles/Header.scss'
 export default function Header() {
     return (
@@ -13,9 +14,9 @@ export default function Header() {
             </div>
 
             <nav className="nav-bar" aria-label="Navigation principale">
-                <a className="logo" href="/">
+                <Link className="logo" to="/">
                     <span className="logo-main">PokéFinder</span>
-                </a>
+                </Link>
 
                 <ul>
                     <li className="user-info">
@@ -23,13 +24,13 @@ export default function Header() {
                             <span className="trainer-label">Trainer</span>
                             <span className="trainer-name">John Doe</span>
                         </div>
-                        <a href="/profile" className="avatar-link" aria-label="Ouvrir le profil">
+                        <Link to="/profile" className="avatar-link" aria-label="Ouvrir le profil">
                             <Avatar
                             className='avatar'
                             alt="John Doe"
                             src="/static/images/avatar/1.jpg"
                             sx={{ width: 46, height: 46 }}/>
-                        </a>
+                        </Link>
                     </li>
                 </ul>
             </nav>
