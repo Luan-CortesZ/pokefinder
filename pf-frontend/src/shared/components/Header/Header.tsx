@@ -28,7 +28,6 @@ export default function Header() {
                             <Avatar
                             className='avatar'
                             alt="John Doe"
-                            src="/static/images/avatar/1.jpg"
                             sx={{ width: 46, height: 46 }}/>
 
                             <div className="user-dropdown">
