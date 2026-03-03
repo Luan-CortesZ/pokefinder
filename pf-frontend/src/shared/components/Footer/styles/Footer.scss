@@ -86,6 +86,7 @@
             height: 100%;
             background-color: #272727;
             color: white;
+            user-select: none;
             font-size: 10px;
             transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
             transform: translateY(-5px);
