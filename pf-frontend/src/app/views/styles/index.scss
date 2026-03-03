@@ -15,7 +15,7 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #2d76ba;
+  background: radial-gradient(circle at 50%, #22345f 0%, #101624 70%, #090d16 100%);
 }
 
 a {
@@ -33,6 +33,19 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(56, 189, 248, 0.07) 0, rgba(56, 189, 248, 0) 60%);
+  background-size: 44px 44px, 44px 44px, 100% 100%;
+  background-position: 0 0, 0 0, center;
 }
 
 h1 {
@@ -62,7 +75,6 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
-    background-color: #ffffff;
   }
   a:hover {
     color: #747bff;
