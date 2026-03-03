@@ -7,34 +7,45 @@ import { useEffect, useState } from 'react'
 
 
 function App() {
-  const [showSplash, setShowSplash] = useState(true)
+  const [showSplash, setShowSplash] = useState(false)
 
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setShowSplash(false)
-    }, 1100)
+    let timer: number | undefined
 
-    return () => window.clearTimeout(timer)
+    const playSplash = () => {
+      setShowSplash(true)
+      timer = window.setTimeout(() => {
+        setShowSplash(false)
+      }, 1100)
+    }
+
+    if (document.readyState === 'complete') {
+      playSplash()
+    } else {
+      window.addEventListener('load', playSplash, { once: true })
+    }
+
+    return () => {
+      if (timer !== undefined) {
+        window.clearTimeout(timer)
+      }
+      window.removeEventListener('load', playSplash)
+    }
   }, [])
 
   return (
     <Router>
       <div className="App">
-        {
-          showSplash ? (
-            <SplashScreen />
-          ) : (
-            <Routes>
-              <Route path='/' element={<ResponsiveLayout/>}>
-                {
-                  routers.map((route, index) => {
-                    return (<Route path={route.path} element={route.component} key={index}/>)
-                  })
-                }
-              </Route>
-            </Routes>
-          )
-        }
+        <Routes>
+          <Route path='/' element={<ResponsiveLayout/>}>
+            {
+              routers.map((route, index) => {
+                return (<Route path={route.path} element={route.component} key={index}/>)
+              })
+            }
+          </Route>
+        </Routes>
+        {showSplash && <SplashScreen />}
       </div>
     </Router>
   )
