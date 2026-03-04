@@ -1,3 +1,5 @@
+import './styles/HomePage.scss'
+
 export default function HomePage() {
   return (
     <h1>HomePage!</h1>
