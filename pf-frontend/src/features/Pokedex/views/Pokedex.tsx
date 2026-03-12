@@ -3,10 +3,12 @@ import { Box } from '@mui/material'
 import React from 'react';
 import { PokeTab, PokeTabs } from './PokeTabs';
 import PokePanel from './PokePanel';
+import { pokemons } from '../../../models/pokemon';
+import PokeBox from './PokeBox';
 
 export default function Pokedex() {
   const [value, setValue] = React.useState(0);
-  const items = [
+  const regions = [
     "Kanto",
     "Johto",
     "Hoenn",
@@ -33,13 +35,15 @@ export default function Pokedex() {
         allowScrollButtonsMobile
         aria-label="scrollable force tabs example"
       >
-        {items.map((item) => (
-          <PokeTab key={item} label={item} />
+        {regions.map((region) => (
+          <PokeTab key={region} label={region} />
         ))}
       </PokeTabs>
-      {items.map((item) => (
-          <PokePanel value={value} index={items.indexOf(item)}>
-            {item}
+      {regions.map((region) => (
+          <PokePanel key={region} value={value} index={regions.indexOf(region)}>
+            {pokemons.map((pokemon) => (
+              <PokeBox key={pokemon.id} pokemon={pokemon}/>
+            ))}
           </PokePanel>
         ))}
     </Box>

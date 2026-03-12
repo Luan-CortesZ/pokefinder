@@ -19,7 +19,7 @@ export default function PokePanel(props: PokePanelProps) {
       {...other}>
       {
         value === index && 
-        <Box sx={{ p: 3, height: 'stretch', background: 'radial-gradient(circle,rgba(0, 232, 213, 1) 0%, rgba(0, 50, 94, 1) 100%)' }}>
+        <Box sx={{ flexWrap: 'wrap', display: 'flex', flexDirection: 'row', p: 3, height: 'stretch', background: 'radial-gradient(circle,rgba(0, 232, 213, 1) 0%, rgba(0, 50, 94, 1) 100%)' }}>
           {children}
         </Box>
       }
