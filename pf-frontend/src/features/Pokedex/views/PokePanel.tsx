@@ -15,11 +15,11 @@ export default function PokePanel(props: PokePanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      style={{ flex: 1, minHeight: 0 }}
+      style={{ flex: 1, minHeight: 0, overflow: 'auto' }}
       {...other}>
       {
         value === index && 
-        <Box sx={{ flexWrap: 'wrap', display: 'flex', flexDirection: 'row', p: 3, height: 'stretch', background: 'radial-gradient(circle,rgba(0, 232, 213, 1) 0%, rgba(0, 50, 94, 1) 100%)' }}>
+        <Box sx={{ justifyContent: 'center', alignContent: 'center', flexWrap: 'wrap', display: 'flex', flexDirection: 'row', minHeight: '100%', background: 'radial-gradient(circle,rgba(0, 232, 213, 1) 0%, rgba(0, 50, 94, 1) 100%)' }}>
           {children}
         </Box>
       }

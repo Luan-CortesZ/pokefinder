@@ -14,13 +14,9 @@ export default function PokeBox(props: PokeBoxProps) {
     <Box
       role="tabpanel"
       sx={{
-        width: 200,
+        width: 186,
         height: 'min-content',
-        borderRadius: "20px",
         overflow: "hidden",
-        border: "2px solid #0f3f67",
-        background: "linear-gradient(165deg, #3c9de8 0%, #1f6ead 50%, #154b78 100%)",
-        boxShadow: "0 14px 26px rgba(7, 29, 48, 0.45)",
       }}
     >
       <Box
@@ -38,14 +34,11 @@ export default function PokeBox(props: PokeBoxProps) {
         <Box
           sx={{
             width: "100%",
-            height: 164,
+            height: 89,
             borderRadius: "14px",
-            border: "2px solid #0f3f67",
-            background: "radial-gradient(circle at 50% 35%, #d0f3ff 0%, #9bd8f7 45%, #4ea6d9 100%)",
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            boxShadow: "inset 0 0 0 2px rgba(255, 255, 255, 0.35)",
           }}
         >
           <Box
@@ -54,7 +47,7 @@ export default function PokeBox(props: PokeBoxProps) {
             alt={pokemon.name}
             sx={{
               userSelect: "none",
-              transform: 'scale(2)',
+              transform: 'scale(1.5)',
               objectFit: "contain",
               imageRendering: "pixelated",
               filter: "drop-shadow(0 8px 8px rgba(3, 27, 46, 0.35))",
@@ -65,6 +58,7 @@ export default function PokeBox(props: PokeBoxProps) {
           {pokemon.types.map((type) => (
             <Box
               component="img"
+              key={type.type.name}
               src={type.type.url}
               sx={{
                 userSelect: "none",
