@@ -1,54 +1,8 @@
-import Tab from '@mui/material/Tab'
 import './styles/Pokedex.scss'
-import { Box, Tabs } from '@mui/material'
-import type { TabsProps } from '@mui/material'
+import { Box } from '@mui/material'
 import React from 'react';
-import styled from '@emotion/styled';
-
-type StyledTabsProps = TabsProps;
-
-const StyledTabs = styled((props: StyledTabsProps) => (
-  <Tabs
-    {...props}
-  />
-))({
-  '& .MuiTabs-indicator': {
-    height: '100%',
-    top: 0,
-    borderRadius: '10px',
-    background: 'linear-gradient(135deg, rgba(61, 224, 211, 0.28) 0%, rgba(57, 140, 179, 0.5) 100%)',
-    boxShadow: 'inset 0 0 0 1px rgba(61, 224, 211, 0.4)',
-    zIndex: 0,
-    transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
-  },
-  '& .MuiTab-root': {
-    zIndex: 1,
-  },
-});
-
-interface StyledTabProps {
-  label: string;
-}
-
-const StyledTab = styled((props: StyledTabProps) => (
-  <Tab disableRipple {...props} />
-))(({ }) => ({
-  textTransform: 'none',
-  color: 'rgba(255,255,255,0.7)',
-  fontWeight: 600,
-  borderRadius: '10px',
-  transition: 'color 0.35s ease',
-  '&.Mui-selected': {
-    color: '#fff',
-  },
-  '&.Mui-focusVisible': {
-    background: 'rgba(100, 95, 228, 0.32)',
-  },
-  ':focus': {
-    outline: 'none'
-  }
-}));
-
+import { PokeTab, PokeTabs } from './PokeTabs';
+import PokePanel from './PokePanel';
 
 export default function Pokedex() {
   const [value, setValue] = React.useState(0);
@@ -69,8 +23,8 @@ export default function Pokedex() {
   };
 
   return (
-    <Box sx={{ background: 'radial-gradient(circle,rgba(0, 179, 164, 1) 0%, rgba(0, 41, 84, 1) 100%);' }}>
-      <StyledTabs
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <PokeTabs
         value={value}
         onChange={handleChange}
         variant="scrollable"
@@ -80,9 +34,14 @@ export default function Pokedex() {
         aria-label="scrollable force tabs example"
       >
         {items.map((item) => (
-          <StyledTab key={item} label={item} />
+          <PokeTab key={item} label={item} />
         ))}
-      </StyledTabs>
+      </PokeTabs>
+      {items.map((item) => (
+          <PokePanel value={value} index={items.indexOf(item)}>
+            {item}
+          </PokePanel>
+        ))}
     </Box>
   )
 }
