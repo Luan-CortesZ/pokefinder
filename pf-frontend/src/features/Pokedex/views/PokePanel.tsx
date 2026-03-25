@@ -17,12 +17,20 @@ export default function PokePanel(props: PokePanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       style={{ flex: 1, minHeight: 0, overflow: 'auto' }}
       {...other}>
-      {
-        value === index && 
-        <Box sx={{ justifyContent: 'center', alignContent: 'center', flexWrap: 'wrap', display: 'flex', flexDirection: 'row', minHeight: '100%', background: 'radial-gradient(circle,rgba(0, 232, 213, 1) 0%, rgba(0, 50, 94, 1) 100%)' }}>
+      {value === index && (
+        <Box
+          sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
+            gap: 2,
+            p: { xs: 2, sm: 3 },
+            minHeight: '100%',
+            background: 'radial-gradient(ellipse at top, #0a3a5c 0%, #001e3c 100%)',
+          }}
+        >
           {children}
         </Box>
-      }
+      )}
     </div>
   );
 }

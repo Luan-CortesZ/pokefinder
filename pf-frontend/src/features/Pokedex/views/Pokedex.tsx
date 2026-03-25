@@ -9,7 +9,7 @@ import PokeBox from './PokeBox';
 export default function Pokedex() {
   const [value, setValue] = React.useState(0);
   const [page, setPage] = React.useState(1);
-  const itemsPerPage = 30;
+  const itemsPerPage = 50;
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 
   const regions = [
@@ -24,15 +24,27 @@ export default function Pokedex() {
     "Paldea"
   ];
 
-  const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
+  const scrollPanelToTop = (regionIndex: number) => {
+    const panel = document.getElementById(`simple-tabpanel-${regionIndex}`);
+    if (panel) panel.scrollTop = 0;
+  };
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
+    setPage(1);
+    scrollPanelToTop(newValue);
+  };
+
+  const handlePageChange = (_: React.ChangeEvent<unknown>, newPage: number) => {
+    setPage(newPage);
+    scrollPanelToTop(value);
   };
 
   return (
     <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <PokeTabs
         value={value}
-        onChange={handleChange}
+        onChange={handleTabChange}
         variant="scrollable"
         className='pokedex-tabs'
         scrollButtons
@@ -43,18 +55,53 @@ export default function Pokedex() {
           <PokeTab key={region} label={region} />
         ))}
       </PokeTabs>
-      {regions.map((region) => (
-          <PokePanel key={region} value={value} index={regions.indexOf(region)}>
-            {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-              <PokeBox key={pokemon.id} pokemon={pokemon}/>
-            ))}
-          </PokePanel>
+
+      <PokePanel value={value} index={0}>
+        {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
+          <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
         ))}
-      <Pagination
-        count={totalPages}
-        page={page}
-        onChange={(_, newPage) => setPage(newPage)}
-      />
+      </PokePanel>
+
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          py: 1.5,
+          background: 'linear-gradient(180deg, rgba(10, 38, 66, 0.97) 0%, rgba(6, 24, 42, 1) 100%)',
+          borderTop: '1px solid rgba(61, 224, 211, 0.15)',
+          boxShadow: 'inset 0 0 0 1px rgba(61, 224, 211, 0.08)',
+        }}
+      >
+        <Pagination
+          count={totalPages}
+          page={page}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+          sx={{
+            '& .MuiPaginationItem-root': {
+              color: 'rgba(255,255,255,0.6)',
+              borderColor: 'rgba(61, 224, 211, 0.18)',
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                background: 'rgba(61, 224, 211, 0.1)',
+                borderColor: 'rgba(61, 224, 211, 0.4)',
+                color: '#fff',
+              },
+              '&.Mui-selected': {
+                background: 'linear-gradient(135deg, rgba(61, 224, 211, 0.28) 0%, rgba(57, 140, 179, 0.52) 100%)',
+                borderColor: 'rgba(61, 224, 211, 0.5)',
+                color: '#fff',
+                fontWeight: 700,
+                boxShadow: '0 0 10px rgba(61, 224, 211, 0.2)',
+                '&:hover': {
+                  background: 'linear-gradient(135deg, rgba(61, 224, 211, 0.4) 0%, rgba(57, 140, 179, 0.68) 100%)',
+                },
+              },
+            },
+          }}
+        />
+      </Box>
     </Box>
   )
 }

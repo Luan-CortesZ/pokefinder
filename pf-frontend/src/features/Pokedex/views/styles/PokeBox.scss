@@ -1,8 +1,90 @@
+.pokebox {
+  border-radius: 16px;
+  height: min-content;
+  overflow: hidden;
+  border: 1px solid rgba(61, 224, 211, 0.18);
+  background: linear-gradient(165deg, #3c9de8 0%, #1f6ead 50%, #154b78 100%);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  will-change: transform;
 
-.types {
-  display: flex;
-  flex-direction: row;
-  padding: 5px 0px 0px 0px;
-  justify-content: space-evenly;
-  width: 100%;
+  &:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(61, 224, 211, 0.45);
+  }
+
+  &-top {
+    padding: 16px 8px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(180deg, rgba(7, 29, 48, 0.28) 0%, rgba(7, 29, 48, 0) 100%);
+  }
+
+  &-img-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    max-height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &-img {
+    width: 100%;
+    height: 100%;
+    transform: scale(1.5);
+    object-fit: contain;
+    image-rendering: pixelated;
+    user-select: none;
+    filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  }
+
+  &-img--hidden {
+    filter: brightness(0);
+  }
+
+  &-types {
+    display: flex;
+    flex-direction: row;
+    padding: 5px 0 0;
+    justify-content: space-evenly;
+    width: 100%;
+  }
+
+  &-type-img {
+    user-select: none;
+    width: 68px;
+  }
+
+  &-footer {
+    padding: 7px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 4px;
+    border-top: 1px solid rgba(6, 29, 48, 0.35);
+    background: linear-gradient(180deg, rgba(8, 42, 68, 0.4) 0%, rgba(5, 30, 48, 0.65) 100%);
+  }
+
+  &-name {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.82rem;
+    text-transform: capitalize;
+    line-height: 1.2;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-id {
+    color: rgba(180, 230, 255, 0.8);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
 }
