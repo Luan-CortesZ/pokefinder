@@ -1,11 +1,10 @@
 const express = require('express')
 const app = express()
-const port = 3000
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const pokemonRoutes = require('./routes/pokemon.routes')
+app.use('/api/pokemon', pokemonRoutes)
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.listen(3000, () => {
+  console.log('Server is running on port 3000')
+})  
