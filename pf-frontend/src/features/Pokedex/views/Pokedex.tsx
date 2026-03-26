@@ -1,14 +1,33 @@
 import './styles/Pokedex.scss'
 import { Box, Pagination } from '@mui/material'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PokeTab, PokeTabs } from './PokeTabs';
 import PokePanel from './PokePanel';
-import { pokemons } from '../../../models/pokemon';
 import PokeBox from './PokeBox';
+import { PokemonService } from '../../../services/pokemon.service';
+import type { Pokemon } from '../../../models/pokemon';
 
 export default function Pokedex() {
   const [value, setValue] = React.useState(0);
   const [page, setPage] = React.useState(1);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      const fetchData = async () => {
+          setLoading(true);
+          try {
+              const data = await PokemonService.getPokemonsByRegion("1");
+              setPokemons(data);
+          } catch (err) {
+              console.error("Erreur lors du chargement", err);
+          } finally {
+              setLoading(false);
+          }
+      };
+
+      fetchData();
+  }, ["1"]);
   const itemsPerPage = 50;
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 

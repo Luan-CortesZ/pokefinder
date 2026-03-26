@@ -80,6 +80,10 @@
     white-space: nowrap;
   }
 
+  .pokebox-img{
+    user-select: none;
+  }
+
   &-id {
     color: rgba(180, 230, 255, 0.8);
     font-size: 0.7rem;
