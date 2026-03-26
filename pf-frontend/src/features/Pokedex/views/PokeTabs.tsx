@@ -29,7 +29,7 @@ interface PokeTabProps {
 
 export const PokeTab = styled((props: PokeTabProps) => (
   <Tab disableRipple {...props} />
-))(({ }) => ({
+))(() => ({
   textTransform: 'none',
   color: 'rgba(255,255,255,0.7)',
   fontWeight: 600,
