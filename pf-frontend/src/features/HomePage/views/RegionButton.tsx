@@ -1,27 +1,37 @@
 import { useState } from "react";
 
-export default function RegionButton(props: { region: string }) {  
+type RegionButtonProps = {
+    region: string;
+    isLocked?: boolean;
+    onSelect?: (region: string) => void;
+};
 
-    const [isOpen, setIsOpen] = useState(false); // par défaut, le menu est fermé
-    
+export default function RegionButton(props: RegionButtonProps) {
+    const [isOpen, setIsOpen] = useState(false);
+
     function handleClick() {
-        setIsOpen(!isOpen); // toggle l'état du menu
+        setIsOpen((previousState) => !previousState);
+        props.onSelect?.(props.region);
     }
 
-    // const value = props.region;
-    // return <button onClick={handleClick}>{value}</button>
     return (
-        <div>
-            <button onClick={handleClick}>{props.region}</button>
+        <div className={`region-button-wrapper ${isOpen ? "is-open" : ""}`}>
+            <button
+                className={`region-button ${props.isLocked ? "is-locked" : ""}`}
+                onClick={handleClick}
+                type="button"
+            >
+                {props.region}
+            </button>
 
-            {isOpen === true && (
-                <div>
-                    <button>Find pokemon</button>
-                    <button>Find TCG Card</button>
-                    <button>Silhouette</button>
-                    <button>Pokeflaire</button>
+            {isOpen && (
+                <div className="region-actions">
+                    <button type="button">Find pokemon</button>
+                    <button type="button">Find TCG Card</button>
+                    <button type="button">Silhouette</button>
+                    <button type="button">Pokeflaire</button>
                 </div>
             )}
         </div>
-    )
+    );
 }

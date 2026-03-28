@@ -1,52 +1,127 @@
+import { type TransitionEvent, useState } from "react";
 import RegionButton from "./RegionButton";
+import "./styles/RegionPicker.scss";
 
-import { useState, useEffect } from "react";
+const REGIONS = [
+  "Kanto",
+  "Johto",
+  "Hoenn",
+  "Sinnoh",
+  "Unova",
+  "Kalos",
+  "Alola",
+  "Galar",
+  "Paldea",
+  "Toutes",
+];
+
+type Direction = -1 | 0 | 1;
 
 export default function RegionPicker() {
-      const [currentIndex, setCurrentIndex] = useState(0);
-      const [isReseting, setIsReseting] = useState(false);
-      
-      // const itemHeight = 60;
-    
-      const handlePrev = () => {
-        if (isReseting) return;
-        setCurrentIndex(currentIndex - 1);
-      };
-    
-      const handleNext = () => {
-        if (isReseting) return;
-        setCurrentIndex(currentIndex + 1);
-      };
+  const [currentRegionIndex, setCurrentRegionIndex] = useState(0);
+  const [direction, setDirection] = useState<Direction>(0);
+  const [isAnimating, setIsAnimating] = useState(false);
 
-        useEffect(() => {
-    if (isReseting) {
-      setTimeout(() => {
-        setIsReseting(false);
-      }, 20);
+  function getLoopedRegion(index: number) {
+    return REGIONS[(index + REGIONS.length) % REGIONS.length];
+  }
+
+  function handlePreviousClick() {
+    if (isAnimating) return;
+
+    setDirection(-1);
+    setIsAnimating(true);
+  }
+
+  function handleNextClick() {
+    if (isAnimating) return;
+
+    setDirection(1);
+    setIsAnimating(true);
+  }
+
+  function handleTransitionEnd(event: TransitionEvent<HTMLDivElement>) {
+    if (!isAnimating) return;
+    if (event.target !== event.currentTarget) return;
+    if (event.propertyName !== "transform") return;
+
+    if (direction === 1) {
+      setCurrentRegionIndex((previousIndex) => {
+        return (previousIndex + 1) % REGIONS.length;
+      });
     }
-  }, [isReseting]);
-    
-    const items = [
-        "Kanto",
-        "Johto",
-        "Hoenn",
-        "Sinnoh",
-        "Unova",
-        "Kalos",
-        "Alola",
-        "Galar",
-        "Paldea",
-        "Toutes"
-      ];
-    
-      return (
-        <div className="region-picker">
-          {items.map((region) => (
-            <RegionButton key={region} region={region} />
+
+    if (direction === -1) {
+      setCurrentRegionIndex((previousIndex) => {
+        return (previousIndex - 1 + REGIONS.length) % REGIONS.length;
+      });
+    }
+
+    setDirection(0);
+    setIsAnimating(false);
+  }
+
+  const cardsToRender = Array.from({ length: 7 }, (_, slotIndex) => {
+    const region = getLoopedRegion(currentRegionIndex + slotIndex - 3);
+
+    let displayedSlot = slotIndex;
+
+    if (isAnimating) {
+      if (direction === 1) {
+        displayedSlot = slotIndex - 1;
+      }
+
+      if (direction === -1) {
+        displayedSlot = slotIndex + 1;
+      }
+    }
+
+    return {
+      key: `${region}-${currentRegionIndex}-${slotIndex}`,
+      region,
+      displayedSlot,
+      isCenterCard: displayedSlot === 3,
+      shouldHandleTransitionEnd: slotIndex === 3,
+    };
+  });
+
+  return (
+    <div className="region-picker">
+      <button
+        className="arrow-btn up"
+        disabled={isAnimating}
+        onClick={handlePreviousClick}
+        type="button"
+      >
+        Up
+      </button>
+
+      <div className="carousel">
+        <div className="wheel-stage">
+          {cardsToRender.map((card) => (
+            <div
+              className={`card slot-${card.displayedSlot} ${
+                card.isCenterCard ? "is-active" : ""
+              }`}
+              key={card.key}
+              onTransitionEnd={
+                card.shouldHandleTransitionEnd ? handleTransitionEnd : undefined
+              }
+            >
+              <RegionButton region={card.region} />
+            </div>
           ))}
-            <button className="arrow-btn up" onClick={handlePrev}>▲</button>
-            <button className="arrow-btn down" onClick={handleNext}>▼</button>
         </div>
-      );
-        
+      </div>
+
+      <button
+        className="arrow-btn down"
+        disabled={isAnimating}
+        onClick={handleNextClick}
+        type="button"
+      >
+        Down
+      </button>
+    </div>
+  );
 }
