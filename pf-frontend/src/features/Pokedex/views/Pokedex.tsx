@@ -60,7 +60,12 @@ export default function Pokedex() {
   };
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ 
+      height: '100%', 
+      display: 'flex',
+      flexDirection: 'column', 
+      overflow: 'hidden',
+      }}>
       <PokeTabs
         value={value}
         onChange={handleTabChange}
@@ -75,11 +80,13 @@ export default function Pokedex() {
         ))}
       </PokeTabs>
 
-      <PokePanel value={value} index={0}>
-        {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-          <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
-        ))}
-      </PokePanel>
+      <Box sx={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
+        <PokePanel value={value} index={0}>
+          {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
+            <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
+          ))}
+        </PokePanel>
+      </Box>
 
       <Box
         sx={{
@@ -89,6 +96,7 @@ export default function Pokedex() {
           background: 'linear-gradient(180deg, rgba(10, 38, 66, 0.97) 0%, rgba(6, 24, 42, 1) 100%)',
           borderTop: '1px solid rgba(61, 224, 211, 0.15)',
           boxShadow: 'inset 0 0 0 1px rgba(61, 224, 211, 0.08)',
+          zIndex: 10,
         }}
       >
         <Pagination
