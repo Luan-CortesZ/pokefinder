@@ -15,9 +15,15 @@ class Pokemon {
             slot: t.slot,
             type: {
                 name: t.type.name,
-                url: t.type.url
+                url: this.setTypeUrl(t.type.url)
             }
         }));
+    }
+
+    setTypeUrl(url) {
+        const id = url.split("/").slice(-2, -1)[0];
+        const newUrl = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-ix/scarlet-violet/${id}.png`;
+        return newUrl;
     }
 }
 
