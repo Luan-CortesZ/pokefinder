@@ -1,4 +1,4 @@
-import type { Pokemon } from "../../../models/pokemon";
+import type { Pokemon } from "../../../models/pokemon.model";
 import './styles/PokeBox.scss';
 
 interface PokeBoxProps {

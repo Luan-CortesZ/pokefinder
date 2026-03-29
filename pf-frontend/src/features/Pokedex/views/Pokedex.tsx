@@ -5,11 +5,11 @@ import { PokeTab, PokeTabs } from './PokeTabs';
 import PokePanel from './PokePanel';
 import PokeBox from './PokeBox';
 import { PokemonService } from '../../../services/pokemon.service';
-import type { Pokemon } from '../../../models/pokemon';
+import type { Pokemon } from '../../../models/pokemon.model';
 
 export default function Pokedex() {
-  const [region, setRegion] = React.useState(0);
-  const [page, setPage] = React.useState(1);
+  const [region, setRegion] = useState(0);
+  const [page, setPage] = useState(1);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
 
