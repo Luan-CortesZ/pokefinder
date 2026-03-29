@@ -8,7 +8,7 @@ import { PokemonService } from '../../../services/pokemon.service';
 import type { Pokemon } from '../../../models/pokemon';
 
 export default function Pokedex() {
-  const [value, setValue] = React.useState(0);
+  const [region, setRegion] = React.useState(0);
   const [page, setPage] = React.useState(1);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [loading, setLoading] = useState(true);
@@ -17,7 +17,7 @@ export default function Pokedex() {
       const fetchData = async () => {
           setLoading(true);
           try {
-              const data = await PokemonService.getPokemonsByRegion("1");
+              const data = await PokemonService.getPokemonsByRegion((region + 1).toString());
               setPokemons(data);
           } catch (err) {
               console.error("Erreur lors du chargement", err);
@@ -27,8 +27,8 @@ export default function Pokedex() {
       };
 
       fetchData();
-  }, ["1"]);
-  const itemsPerPage = 50;
+  }, [region]);
+  const itemsPerPage = 30;
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 
   const regions = [
@@ -49,14 +49,14 @@ export default function Pokedex() {
   };
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setRegion(newValue);
     setPage(1);
     scrollPanelToTop(newValue);
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
-    scrollPanelToTop(value);
+    scrollPanelToTop(region);
   };
 
   return (
@@ -67,7 +67,7 @@ export default function Pokedex() {
       overflow: 'hidden',
       }}>
       <PokeTabs
-        value={value}
+        value={region}
         onChange={handleTabChange}
         variant="scrollable"
         className='pokedex-tabs'
@@ -80,8 +80,8 @@ export default function Pokedex() {
         ))}
       </PokeTabs>
 
-      <Box sx={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
-        <PokePanel value={value} index={0}>
+      <Box sx={{ flex: 1, overflowY: 'auto', minHeight: 0, background: 'radial-gradient(ellipse at top, #0a3a5c 0%, #001e3c 100%)' }}>
+        <PokePanel value={region} index={region}>
           {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
             <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
           ))}

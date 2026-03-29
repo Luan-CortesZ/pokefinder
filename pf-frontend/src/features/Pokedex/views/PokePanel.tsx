@@ -15,7 +15,6 @@ export default function PokePanel(props: PokePanelProps) {
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
-      style={{ height: '100%' }}
       {...other}>
       {value === index && (
         <Box
@@ -23,8 +22,7 @@ export default function PokePanel(props: PokePanelProps) {
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
             gap: 2,
-            p: { xs: 2, sm: 3 },
-            background: 'radial-gradient(ellipse at top, #0a3a5c 0%, #001e3c 100%)',
+            p: { xs: 2, sm: 3 }
           }}
         >
           {children}
