@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-
+const { client } = require('../config/database');
+const bcrypt = require('bcryptjs');
 router.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
     if (err) { 
@@ -17,6 +18,23 @@ router.post('/login', (req, res, next) => {
       return res.status(200).json({ message: "Connexion réussie", user: user.username });
     });
   })(req, res, next);
+});
+
+router.post('/register', async (req, res) => {
+  try {
+    const db = client.db("pokefinder");
+    const users = db.collection("users");
+    const user = await users.insertOne({
+      name: req.body.name,
+      email: req.body.email,
+      password: await bcrypt.hash(req.body.password, 10)
+    });
+    console.log(user);
+    
+    res.status(201).json({ message: "Utilisateur créé", user: user.name });
+  }catch (err) {
+    res.status(500).json({ message: "Erreur serveur" });
+  }
 });
 
 module.exports = router;

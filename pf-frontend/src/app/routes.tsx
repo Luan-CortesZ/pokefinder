@@ -1,7 +1,8 @@
 import HomePage from "../features/HomePage/views/HomePage";
 import Profile from "../features/Profile/views/Profile";
 import Pokedex from "../features/Pokedex/views/Pokedex";
-import Login from "../features/Login/Login";
+import Login from "../features/Auth/Login/Login";
+import Register from "../features/Auth/Register/Register";
 
 export const routers = [
     {
@@ -11,6 +12,10 @@ export const routers = [
     {
       path: "/login",
       component: <Login/>,
+    },
+    {
+      path: "/register",
+      component: <Register/>,
     },
     {
       path: "/profile",
