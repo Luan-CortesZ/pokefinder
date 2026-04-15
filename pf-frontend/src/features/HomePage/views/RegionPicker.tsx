@@ -1,4 +1,5 @@
 import { type TransitionEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import RegionButton from "./RegionButton";
 import "./styles/RegionPicker.scss";
 
@@ -18,7 +19,9 @@ const REGIONS = [
 type Direction = -1 | 0 | 1;
 
 export default function RegionPicker() {
+  const navigate = useNavigate();
   const [currentRegionIndex, setCurrentRegionIndex] = useState(0);
+  const [openRegion, setOpenRegion] = useState<string | null>(null);
   const [direction, setDirection] = useState<Direction>(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -29,6 +32,7 @@ export default function RegionPicker() {
   function handlePreviousClick() {
     if (isAnimating) return;
 
+    setOpenRegion(null);
     setDirection(-1);
     setIsAnimating(true);
   }
@@ -36,8 +40,15 @@ export default function RegionPicker() {
   function handleNextClick() {
     if (isAnimating) return;
 
+    setOpenRegion(null);
     setDirection(1);
     setIsAnimating(true);
+  }
+
+  function handleRegionSelect(region: string) {
+    setOpenRegion((previousRegion) => {
+      return previousRegion === region ? null : region;
+    });
   }
 
   function handleTransitionEnd(event: TransitionEvent<HTMLDivElement>) {
@@ -96,22 +107,41 @@ export default function RegionPicker() {
         Up
       </button>
 
-      <div className="carousel">
-        <div className="wheel-stage">
-          {cardsToRender.map((card) => (
-            <div
-              className={`card slot-${card.displayedSlot} ${
-                card.isCenterCard ? "is-active" : ""
-              }`}
-              key={card.key}
-              onTransitionEnd={
-                card.shouldHandleTransitionEnd ? handleTransitionEnd : undefined
-              }
-            >
-              <RegionButton region={card.region} />
-            </div>
-          ))}
+      <div className="region-picker-content">
+        <div className="carousel">
+          <div className="wheel-stage">
+            {cardsToRender.map((card) => (
+              <div
+                className={`card slot-${card.displayedSlot} ${
+                  card.isCenterCard ? "is-active" : ""
+                }`}
+                key={card.key}
+                onTransitionEnd={
+                  card.shouldHandleTransitionEnd
+                    ? handleTransitionEnd
+                    : undefined
+                }
+              >
+                <RegionButton
+                  isOpen={openRegion === card.region}
+                  onSelect={handleRegionSelect}
+                  region={card.region}
+                />
+              </div>
+            ))}
+          </div>
         </div>
+
+        {openRegion && (
+          <div className="region-actions" aria-label={`Actions ${openRegion}`}>
+            <button onClick={() => navigate("/find-pokemon")} type="button">
+              Find pokemon
+            </button>
+            <button type="button">Find TCG Card</button>
+            <button type="button">Silhouette</button>
+            <button type="button">Pokeflaire</button>
+          </div>
+        )}
       </div>
 
       <button

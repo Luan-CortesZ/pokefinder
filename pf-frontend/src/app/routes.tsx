@@ -1,6 +1,7 @@
 import HomePage from "../features/HomePage/views/HomePage";
 import Profile from "../features/Profile/views/Profile";
 import Pokedex from "../features/Pokedex/views/Pokedex";
+import FindPokemonPage from "../features/FindPokemon/views/FindPokemonPage";
 
 export const routers = [
     {
@@ -14,5 +15,9 @@ export const routers = [
     {
       path: "/profile/pokédex",
       component: <Pokedex/>,
+    },
+    {
+      path: "/find-pokemon",
+      component: <FindPokemonPage/>,
     },
   ];

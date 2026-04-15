@@ -2,6 +2,7 @@
   --card-height: 72px;
   --card-gap: 14px;
   --card-step: calc(var(--card-height) + var(--card-gap));
+  --active-card-center: calc(var(--card-step) + (var(--card-height) / 2));
 
   width: min(320px, 92vw);
   margin: 2rem auto;
@@ -12,8 +13,10 @@
 }
 
 .carousel {
+  flex: 0 0 100%;
   width: 100%;
-  height: calc(var(--card-step) * 3);
+  height: 100%;
+  box-sizing: border-box;
   overflow: hidden;
   position: relative;
   border-radius: 28px;
@@ -22,6 +25,13 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     0 16px 30px rgba(66, 49, 12, 0.18);
+}
+
+.region-picker-content {
+  width: 100%;
+  height: calc(var(--card-step) * 3);
+  position: relative;
+  display: block;
 }
 
 .card {
@@ -100,6 +110,37 @@
 
 .card.is-active {
   box-shadow: 0 10px 24px rgba(66, 49, 12, 0.16);
+}
+
+.region-button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.region-button {
+  flex: 0 0 auto;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 0.75rem;
+  background: #222;
+  color: #fff7de;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.region-actions {
+  position: absolute;
+  font-size: 1.25rem;
+  left: calc(100% + 0.8rem);
+  top: var(--active-card-center);
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  align-items: center;
 }
 
 .arrow-btn {
