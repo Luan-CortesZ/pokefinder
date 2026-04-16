@@ -1,15 +1,34 @@
 import './styles/Pokedex.scss'
 import { Box, Pagination } from '@mui/material'
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { PokeTab, PokeTabs } from './PokeTabs';
 import PokePanel from './PokePanel';
-import { pokemons } from '../../../models/pokemon';
 import PokeBox from './PokeBox';
+import { PokemonService } from '../../../services/pokemon.service';
+import type { Pokemon } from '../../../models/pokemon.model';
 
 export default function Pokedex() {
-  const [value, setValue] = React.useState(0);
-  const [page, setPage] = React.useState(1);
-  const itemsPerPage = 50;
+  const [region, setRegion] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+      const fetchData = async () => {
+          setLoading(true);
+          try {
+              const data = await PokemonService.getPokemonsByRegion((region + 1).toString());
+              setPokemons(data);
+          } catch (err) {
+              console.error("Erreur lors du chargement", err);
+          } finally {
+              setLoading(false);
+          }
+      };
+
+      fetchData();
+  }, [region]);
+  const itemsPerPage = 30;
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 
   const regions = [
@@ -30,20 +49,25 @@ export default function Pokedex() {
   };
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
+    setRegion(newValue);
     setPage(1);
     scrollPanelToTop(newValue);
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
-    scrollPanelToTop(value);
+    scrollPanelToTop(region);
   };
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ 
+      height: '100%', 
+      display: 'flex',
+      flexDirection: 'column', 
+      overflow: 'hidden',
+      }}>
       <PokeTabs
-        value={value}
+        value={region}
         onChange={handleTabChange}
         variant="scrollable"
         className='pokedex-tabs'
@@ -56,11 +80,13 @@ export default function Pokedex() {
         ))}
       </PokeTabs>
 
-      <PokePanel value={value} index={0}>
-        {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-          <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
-        ))}
-      </PokePanel>
+      <Box sx={{ flex: 1, overflowY: 'auto', minHeight: 0, background: 'radial-gradient(ellipse at top, #0a3a5c 0%, #001e3c 100%)' }}>
+        <PokePanel value={region} index={region}>
+          {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
+            <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
+          ))}
+        </PokePanel>
+      </Box>
 
       <Box
         sx={{
@@ -70,6 +96,7 @@ export default function Pokedex() {
           background: 'linear-gradient(180deg, rgba(10, 38, 66, 0.97) 0%, rgba(6, 24, 42, 1) 100%)',
           borderTop: '1px solid rgba(61, 224, 211, 0.15)',
           boxShadow: 'inset 0 0 0 1px rgba(61, 224, 211, 0.08)',
+          zIndex: 10,
         }}
       >
         <Pagination

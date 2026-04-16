@@ -5,7 +5,8 @@
     "main"
     "footer";
   grid-template-rows: auto 1fr auto; 
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .header { 
@@ -18,5 +19,7 @@
 
 .main-content { 
   grid-area: main;
-  overflow-y: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }

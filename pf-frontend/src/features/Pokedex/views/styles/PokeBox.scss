@@ -29,6 +29,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
   }
 
   &-img {
@@ -78,6 +79,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .pokebox-img{
+    -webkit-user-drag: none
   }
 
   &-id {
