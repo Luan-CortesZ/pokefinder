@@ -2,7 +2,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 require('dotenv').config();
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
-const uri = `mongodb+srv://${dbUser}:${dbPassword}@pokefinder.84po30q.mongodb.net/`;
+const uri = process.env.MONGODB_URI;
 
 const client = new MongoClient(uri, {
   serverApi: {
