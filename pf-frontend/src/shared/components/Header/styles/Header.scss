@@ -173,6 +173,33 @@
                 visibility: visible;
                 transform: translateY(0);
             }
+
+            &.guest-user-info {
+                width: auto;
+                padding: 8px;
+            }
+
+            .guest-actions {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .guest-action-btn {
+                text-decoration: none;
+                color: #ffffff;
+                font-size: 14px;
+                font-weight: 700;
+                padding: 8px 14px;
+                border-radius: 1000px;
+                border: 1px solid rgba(255, 255, 255, 0.45);
+
+                &:hover,
+                &:focus-visible {
+                    background: rgba(255, 255, 255, 0.18);
+                    outline: none;
+                }
+            }
         }
     }
 }

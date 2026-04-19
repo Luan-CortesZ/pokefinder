@@ -16,7 +16,8 @@ exports.login = async (req, res, next) => {
 
     req.logIn(user, (err) => {
       if (err) return next(err);
-      return res.status(200).json({ message: "Connexion réussie", user: user.username });
+      console.log("Utilisateur connecté:", user);
+      return res.status(200).json({ message: "Connexion réussie", user: user });
     });
   })(req, res, next);
 };
@@ -30,7 +31,8 @@ exports.register = async (req, res) => {
       email: req.body.email,
       password: await bcrypt.hash(req.body.password, 10)
     });
-    res.status(201).json({ message: "Utilisateur créé", user: user.name });
+    console.log("Utilisateur créé:", user);
+    res.status(201).json({ message: "Utilisateur créé", user: user });
   }catch (err) {
     res.status(500).json({ message: "Erreur serveur" });
   }
