@@ -13,6 +13,9 @@ services:
   backend:
     build: ./pf-backend
     container_name: pokefinder_backend
+    volumes:
+      - ./pf-backend:/app
+      - /app/node_modules
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -26,6 +29,9 @@ services:
   frontend:
     build: ./pf-frontend
     container_name: pokefinder_frontend
+    volumes:
+      - ./pf-frontend:/app
+      - /app/node_modules
     ports:
       - "5173:5173"
     environment:
