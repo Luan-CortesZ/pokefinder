@@ -3,6 +3,7 @@ import Profile from "../features/Profile/views/Profile";
 import Pokedex from "../features/Pokedex/views/Pokedex";
 import Login from "../features/Auth/Login/Login";
 import Register from "../features/Auth/Register/Register";
+import { ProtectedRoute } from "../components/ProtectedRoutes/ProtectedRoute";
 
 export const routers = [
     {
@@ -19,10 +20,10 @@ export const routers = [
     },
     {
       path: "/profile",
-      component: <Profile/>,
+      component: <ProtectedRoute><Profile/></ProtectedRoute>,
     },
     {
       path: "/profile/pokédex",
-      component: <Pokedex/>,
+      component: <ProtectedRoute><Pokedex/></ProtectedRoute>,
     },
   ];
