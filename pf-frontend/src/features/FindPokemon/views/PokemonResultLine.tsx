@@ -1,37 +1,27 @@
+import type { Pokemon } from "../../../models/pokemon.model";
 import PokemonInfoCard from "./PokemonInfoCard";
 
-type PokemonResult = {
-  id: number;
-  name: string;
-  sprite: string;
-  type1: string;
-  type2: string;
-  habitat: string;
-  colors: string;
-  evolutionStage: string;
-  height: string;
-  weight: string;
-};
-
 type PokemonResultLineProps = {
-  pokemon: PokemonResult;
+  pokemon: Pokemon;
 };
-
-export type { PokemonResult };
 
 export default function PokemonResultLine({ pokemon }: PokemonResultLineProps) {
   return (
     <div className="pokemon-result-line">
       <PokemonInfoCard tone="image" label={pokemon.name}>
-        {pokemon.sprite}
+        <img
+          className="pokebox-img"
+          src={pokemon.sprites.front_default}
+          alt={pokemon.name}
+        />
       </PokemonInfoCard>
-      <PokemonInfoCard>{pokemon.type1}</PokemonInfoCard>
-      <PokemonInfoCard>{pokemon.type2}</PokemonInfoCard>
-      <PokemonInfoCard>{pokemon.habitat}</PokemonInfoCard>
-      <PokemonInfoCard tone="yellow">{pokemon.colors}</PokemonInfoCard>
-      <PokemonInfoCard>{pokemon.evolutionStage}</PokemonInfoCard>
-      <PokemonInfoCard tone="red">{pokemon.height}</PokemonInfoCard>
-      <PokemonInfoCard tone="red">{pokemon.weight}</PokemonInfoCard>
+      <PokemonInfoCard>{pokemon.types[0].type.name}</PokemonInfoCard>
+      {/* <PokemonInfoCard>{pokemon.types[1].type.name}</PokemonInfoCard> */}
+      <PokemonInfoCard>{pokemon.location_area_encounters}</PokemonInfoCard>
+      <PokemonInfoCard tone="yellow">{pokemon.id.toString()}</PokemonInfoCard>
+      <PokemonInfoCard>{pokemon.id.toString()}</PokemonInfoCard>
+      <PokemonInfoCard tone="red">{pokemon.height.toString()}</PokemonInfoCard>
+      <PokemonInfoCard tone="red">{pokemon.weight.toString()}</PokemonInfoCard>
     </div>
   );
 }

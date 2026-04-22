@@ -1,58 +1,36 @@
-import PokemonResultLine, { type PokemonResult } from "./PokemonResultLine";
+import { useEffect, useState } from "react";
+import { PokemonService } from "../../../services/pokemon.service";
 import "./styles/FindPokemonPage.scss";
+import type { Pokemon } from "../../../models/pokemon.model";
+import PokemonResultLine from "./PokemonResultLine";
 
-const POKEMON_RESULTS: PokemonResult[] = [
-  {
-    id: 1,
-    name: "Ponyta",
-    sprite: "Ponyta",
-    type1: "Feu",
-    type2: "Aucun",
-    habitat: "Champs",
-    colors: "Orange, Jaune",
-    evolutionStage: "2",
-    height: "1m70",
-    weight: "95kg",
-  },
-  {
-    id: 2,
-    name: "Arcanin",
-    sprite: "Arcanin",
-    type1: "Feu",
-    type2: "Aucun",
-    habitat: "Champs",
-    colors: "Orange, Jaune",
-    evolutionStage: "2",
-    height: "1m90",
-    weight: "155kg",
-  },
-  {
-    id: 3,
-    name: "Florizarre",
-    sprite: "Florizarre",
-    type1: "Plante",
-    type2: "Poison",
-    habitat: "Champs",
-    colors: "Vert",
-    evolutionStage: "3",
-    height: "2m",
-    weight: "100kg",
-  },
-  {
-    id: 4,
-    name: "Dracaufeu",
-    sprite: "Dracaufeu",
-    type1: "Feu",
-    type2: "Vol",
-    habitat: "Montagne",
-    colors: "Orange",
-    evolutionStage: "3",
-    height: "1m70",
-    weight: "90.5kg",
-  },
-];
+// ajouter un champ de recherche, et quand ça recherche le pokemon, ça liste
+// les pokemons qui correspondent aux lettres affichés dans la texteBox.
+// Dans la barre de recherche on affiche le name et le sprite
+// Quand on le sélectionne ça l'ajoute dans le tableau result
 
 export default function FindPokemonPage() {
+  const [pokemon, setPokemon] = useState<Pokemon>();
+  // utiliser quand on va faire la recherche de pokemon pour afficher ceux dispo
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const pokemons = await PokemonService.getPokemonsByRegion(
+          (1).toString(),
+        );
+        setPokemons(pokemons);
+        const randomIndex = Math.floor(Math.random() * pokemons.length);
+        setPokemon(pokemons[randomIndex]);
+      } catch (err) {
+        console.error("Erreur lors du chargement", err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <section className="find-pokemon-page">
       <h1>Find Pokemon</h1>
@@ -70,7 +48,7 @@ export default function FindPokemonPage() {
         </div>
 
         <div className="pokemon-results-list">
-          {POKEMON_RESULTS.map((pokemon) => (
+          {pokemons.map((pokemon) => (
             <PokemonResultLine key={pokemon.id} pokemon={pokemon} />
           ))}
         </div>

@@ -1,5 +1,5 @@
 type PokemonInfoCardProps = {
-  children: string;
+  children: any;
   tone?: "green" | "yellow" | "red" | "image";
   label?: string;
 };
