@@ -16,7 +16,6 @@ export const AuthService = {
                 const errorData = await response.json();
                 throw new Error(errorData.message || 'Erreur de connexion');
             }
-
             return await response.json();
         } catch (error) {
             console.error("Erreur service auth:", error);

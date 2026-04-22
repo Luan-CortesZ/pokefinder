@@ -4,6 +4,7 @@ import type { LoginFormInputs } from '../../../models/login.model';
 import { AuthService } from '../../../services/auth.service';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import { useAuth } from '../../../components/AuthContext/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,11 +14,13 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormInputs>();
+  const { login } = useAuth();
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const user = await AuthService.login(data);
-      console.log("Connexion réussie pour :", user.username);
+      const response = await AuthService.login(data);
+      login(response.user);
+      console.log("Connexion réussie pour :", response.user.name);
       navigate('/profile/pokédex');
     } catch (err: any) {
       setHasError(true);

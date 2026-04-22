@@ -5,14 +5,17 @@ services:
     ports:
       - "27017:27017"
     environment:
-      MONGO_INITDB_ROOT_USERNAME: db_user
-      MONGO_INITDB_ROOT_PASSWORD: 1234
+      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
       - mongo_data:/data/db
 
   backend:
     build: ./pf-backend
     container_name: pokefinder_backend
+    volumes:
+      - ./pf-backend:/app
+      - /app/node_modules
     environment:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -26,6 +29,9 @@ services:
   frontend:
     build: ./pf-frontend
     container_name: pokefinder_frontend
+    volumes:
+      - ./pf-frontend:/app
+      - /app/node_modules
     ports:
       - "5173:5173"
     environment:
