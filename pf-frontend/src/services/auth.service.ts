@@ -2,6 +2,8 @@ import type { LoginFormInputs } from "../models/login.model";
 import type { User } from "../models/user.model";
 const API_URL = 'http://localhost:3000/api/auth'; 
 
+type RegisterPayload = Omit<User, 'id'>;
+
 export const AuthService = {
     login: async (credentials: LoginFormInputs): Promise<any> => {
         try {
@@ -22,7 +24,7 @@ export const AuthService = {
             throw error;
         }
     },
-    register: async (userData: User): Promise<any> => {
+    register: async (userData: RegisterPayload): Promise<any> => {
         try {
             const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',
