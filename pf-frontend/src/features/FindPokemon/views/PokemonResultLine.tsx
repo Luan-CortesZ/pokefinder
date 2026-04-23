@@ -4,9 +4,14 @@ import PokemonInfoCard from "./PokemonInfoCard";
 type PokemonResultLineProps = {
   pokemon: Pokemon;
 };
+// rajouiter le pokemon qui est généré aléatoirement dans le tableau result pour le comparer avec les pokemons recherchés
 
 export default function PokemonResultLine({ pokemon }: PokemonResultLineProps) {
   return (
+    // faire une fonction verifyField (qui prend en paramètre le champ à comparer) qui retourne la couleur en text en fonction de la comparaison entre le pokemon random et le pokemon recherché
+    // qui sera appelé à chaque fois dans tone.
+
+
     <div className="pokemon-result-line">
       <PokemonInfoCard tone="image" label={pokemon.name}>
         <img

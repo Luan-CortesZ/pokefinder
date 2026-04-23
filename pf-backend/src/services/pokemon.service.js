@@ -3,7 +3,7 @@ const Region = require("../models/region.model");
 const NodeCache = require("node-cache");
 
 const myCache = new NodeCache({ stdTTL: 86400 }); // Cache garde 24h (en secondes)
-const POKEAPI_BASE_URL = "https://pokeapi.co/api/v2";
+const POKEAPI_BASE_URL = "https://pokeapi.co/api/v2/";
 const FETCH_TIMEOUT_MS = 10000;
 const FETCH_RETRIES = 2;
 const MAX_CONCURRENT_REQUESTS = 10;
