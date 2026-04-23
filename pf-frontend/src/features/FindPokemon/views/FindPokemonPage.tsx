@@ -11,16 +11,20 @@ import PokemonSearch from "../PokemonSearch";
 // Quand on le sélectionne ça l'ajoute dans le tableau result
 
 export default function FindPokemonPage() {
-  const [pokemon, setPokemon] = useState<Pokemon>();
+  const [randomPokemon, setRandomPokemon] = useState<Pokemon>();
+  const [pokemonSelected, setPokemonSelected] = useState<Pokemon>();
   // utiliser quand on va faire la recherche de pokemon pour afficher ceux dispo
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
 const handlePokemonSelected = (pokemonName: string | null) => {
     const selected = pokemons.find((p) => p.name === pokemonName);
     setPokemonResearched([selected, ...pokemonResearched] as Pokemon[]);
+    setPokemonSelected(selected);
   };
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
 
+  // créer une fonction comparePokemon qui compare le pokemon choisi random et le selected
 
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,7 +34,7 @@ const handlePokemonSelected = (pokemonName: string | null) => {
         );
         setPokemons(pokemons);
         const randomIndex = Math.floor(Math.random() * pokemons.length);
-        setPokemon(pokemons[randomIndex]);
+        setRandomPokemon(pokemons[randomIndex]);
       } catch (err) {
         console.error("Erreur lors du chargement", err);
       }
