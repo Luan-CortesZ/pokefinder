@@ -6,7 +6,9 @@ import './styles/Register.scss';
 import { Button, TextField } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-type RegisterFormValues = Pick<User, 'name' | 'email' | 'password'>;
+type RegisterFormValues = Pick<User, 'name' | 'email' | 'password'> & {
+  confirmPassword: string;
+};
 
 export default function Register() {
   const [hasError, setHasError] = useState(false);
@@ -16,9 +18,12 @@ export default function Register() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
     reset,
   } = useForm<RegisterFormValues>();
+
+  const passwordValue = watch('password');
 
   const onSubmit = async (data: RegisterFormValues) => {
     setHasError(false);
@@ -26,8 +31,10 @@ export default function Register() {
     setErrorMessage('');
     setIsSubmitting(true);
 
+    const { confirmPassword, ...registerPayload } = data;
+
     try {
-      const user = await AuthService.register(data);
+      const user = await AuthService.register(registerPayload);
       console.log('Inscription reussie pour :', user.username);
       setIsSuccess(true);
       reset();
@@ -105,6 +112,24 @@ export default function Register() {
               fullWidth
               error={!!errors.password}
               helperText={errors.password?.message}
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="confirmPassword">Confirm password</label>
+            <TextField
+              id="confirmPassword"
+              type="password"
+              {...register('confirmPassword', {
+                required: 'Please confirm your password',
+                validate: (value) =>
+                  value === passwordValue || 'Passwords do not match',
+              })}
+              placeholder="Repeat your password"
+              variant="outlined"
+              fullWidth
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
             />
           </div>
 
