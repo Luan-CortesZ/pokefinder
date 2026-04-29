@@ -15,10 +15,19 @@ export default function FindPokemonPage() {
   const [pokemonSelected, setPokemonSelected] = useState<Pokemon>();
   // utiliser quand on va faire la recherche de pokemon pour afficher ceux dispo
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-const handlePokemonSelected = (pokemonName: string | null) => {
+  const handlePokemonSelected = (pokemonName: string | null) => {
     const selected = pokemons.find((p) => p.name === pokemonName);
-    setPokemonResearched([selected, ...pokemonResearched] as Pokemon[]);
+
+    if (!selected) {
+      return;
+    }
+
+    setPokemonResearched((prev) => [selected, ...prev]);
     setPokemonSelected(selected);
+
+    if (selected.name !== randomPokemon?.name) {
+      setPokemons((prev) => prev.filter((pokemon) => pokemon.name !== selected.name));
+    }
   };
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
 
@@ -49,7 +58,11 @@ const handlePokemonSelected = (pokemonName: string | null) => {
     <section className="find-pokemon-page">
       <h1>Find Pokemon</h1>
 
-      <PokemonSearch pokemons={pokemons} onPokemonSelected={handlePokemonSelected} />
+      <PokemonSearch
+        pokemons={pokemons}
+        onPokemonSelected={handlePokemonSelected}
+        targetPokemonName={randomPokemon?.name}
+      />
 
       <div className="pokemon-results-board">
         <div className="pokemon-results-header">
@@ -65,8 +78,12 @@ const handlePokemonSelected = (pokemonName: string | null) => {
 
 
         <div className="pokemon-results-list">
-          {pokemonResearched.map((pokemon) => (
-            <PokemonResultLine key={pokemon.id} pokemon={pokemon} />
+          {pokemonResearched.map((pokemon, index) => (
+            <PokemonResultLine
+              key={`${pokemon.id}-${index}`}
+              pokemon={pokemon}
+              randomPokemon={randomPokemon}
+            />
           ))}
         </div>
       </div>
