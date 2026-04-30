@@ -7,14 +7,14 @@ import PokemonResultLine from "./PokemonResultLine";
 import PokemonSearch from "../PokemonSearch";
 
 type FindPokemonLocationState = {
-  regionId?: string;
+  regionId?: number;
   regionName?: string;
 };
 
 export default function FindPokemonPage() {
   const location = useLocation();
   const locationState = (location.state as FindPokemonLocationState | null) ?? null;
-  const regionId = locationState?.regionId ?? "1";
+  const regionId = locationState?.regionId ?? 1;
   const regionName = locationState?.regionName ?? "Kanto";
 
   const [randomPokemon, setRandomPokemon] = useState<Pokemon>();
