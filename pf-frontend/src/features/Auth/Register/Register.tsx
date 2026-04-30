@@ -1,55 +1,153 @@
-import { useForm } from 'react-hook-form';
-import './styles/Register.scss';
 import { AuthService } from '../../../services/auth.service';
 import { useState } from 'react';
 import type { User } from '../../../models/user.model';
+import { useForm } from 'react-hook-form';
+import './styles/Register.scss';
+import { Button, TextField } from '@mui/material';
+import { Link } from 'react-router-dom';
+
+type RegisterFormValues = Pick<User, 'name' | 'email' | 'password'> & {
+  confirmPassword: string;
+};
 
 export default function Register() {
   const [hasError, setHasError] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
-  } = useForm<User>();
+    reset,
+  } = useForm<RegisterFormValues>();
 
-  const onSubmit = async (data: User) => {
+  const passwordValue = watch('password');
+
+  const onSubmit = async (data: RegisterFormValues) => {
+    setHasError(false);
+    setIsSuccess(false);
+    setErrorMessage('');
+    setIsSubmitting(true);
+
+    const { confirmPassword, ...registerPayload } = data;
+
     try {
-      const user = await AuthService.register(data);
-      console.log("Inscription réussie pour :", user.username);
+      const user = await AuthService.register(registerPayload);
+      console.log('Inscription reussie pour :', user.username);
       setIsSuccess(true);
+      reset();
     } catch (err: any) {
       setHasError(true);
+      setErrorMessage(err?.message || 'Unable to create account. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
+
   return (
-    <>
-      <h2>Register Form</h2>
+    <div className="register-page">
+      <div className="register-info">
+        <h1>Pokefinder</h1>
+        <p>Build your trainer account and start your journey.</p>
+      </div>
 
-      <form className="App" onSubmit={handleSubmit(onSubmit)}>
-          <input
-              type="name"
-              {...register("name", { required: true })}
-              placeholder="Username"
-          />
-          <input
+      <div className="register-card">
+        <h2>Create account</h2>
+        <p className="subtitle">Join the community in less than a minute.</p>
+
+        {isSuccess && <div className="feedback success">Account created successfully.</div>}
+        {hasError && <div className="feedback error">{errorMessage}</div>}
+
+        <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+          <div className="field">
+            <label htmlFor="name">Username</label>
+            <TextField
+              id="name"
+              type="text"
+              {...register('name', {
+                required: 'Username is required',
+                minLength: { value: 3, message: 'At least 3 characters' },
+              })}
+              placeholder="Ash Ketchum"
+              variant="outlined"
+              fullWidth
+              error={!!errors.name}
+              helperText={errors.name?.message}
+            />
+          </div>
+
+          <div className="field">
+            <label htmlFor="email">Email</label>
+            <TextField
+              id="email"
               type="email"
-              {...register("email", { required: true })}
-              placeholder="Email"
-          />
-          {errors.email && <span style={{ color: "red" }}>*Email* is mandatory</span>}
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: 'Please enter a valid email',
+                },
+              })}
+              placeholder="trainer@pokefinder.com"
+              variant="outlined"
+              fullWidth
+              error={!!errors.email}
+              helperText={errors.email?.message}
+            />
+          </div>
 
-          <input
+          <div className="field">
+            <label htmlFor="password">Password</label>
+            <TextField
+              id="password"
               type="password"
-              {...register("password", { required: true })}
-              placeholder="Password"
-          />
-          {errors.password && <span style={{ color: "red" }}>*Password* is mandatory</span>}
+              {...register('password', {
+                required: 'Password is required',
+                minLength: { value: 6, message: 'At least 6 characters' },
+              })}
+              placeholder="Enter a secure password"
+              variant="outlined"
+              fullWidth
+              error={!!errors.password}
+              helperText={errors.password?.message}
+            />
+          </div>
 
-          <input type="submit" style={{ backgroundColor: "#a1eafb" }} />
-      </form>
-      {hasError && <p style={{ color: "red" }}>Inscription failed. Please check your information.</p>}
-      {isSuccess && <p style={{ color: "green" }}>Inscription réussie. Vous pouvez maintenant vous connecter.</p>}
-    </>
-  )
+          <div className="field">
+            <label htmlFor="confirmPassword">Confirm password</label>
+            <TextField
+              id="confirmPassword"
+              type="password"
+              {...register('confirmPassword', {
+                required: 'Please confirm your password',
+                validate: (value) =>
+                  value === passwordValue || 'Passwords do not match',
+              })}
+              placeholder="Repeat your password"
+              variant="outlined"
+              fullWidth
+              error={!!errors.confirmPassword}
+              helperText={errors.confirmPassword?.message}
+            />
+          </div>
+
+          <Button
+            type="submit"
+            variant="contained"
+            className="register-btn"
+            disabled={isSubmitting}
+            fullWidth
+          >
+            {isSubmitting ? 'Creating account...' : 'Register'}
+          </Button>
+        </form>
+
+        <p className="login-link">
+          Already have an account? <Link to="/login">Sign in</Link>
+        </p>
+      </div>
+    </div>
+  );
 }
