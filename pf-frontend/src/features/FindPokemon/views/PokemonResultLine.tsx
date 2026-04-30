@@ -31,24 +31,47 @@ export default function PokemonResultLine({
     return "red";
   };
 
-  const verifyTypes = (
-    searchedTypes: string[],
+  const verifyExactField = (
+    searchedValue: string | number,
+    randomValue: string | number,
+  ): "green" | "red" => {
+    return searchedValue === randomValue ? "green" : "red";
+  };
+
+  const verifyTypeSlot = (
+    searchedType: string | undefined,
+    targetTypeAtSameSlot: string | undefined,
     targetTypes: string[],
   ): "green" | "yellow" | "red" => {
-    const hasSameTypes =
-      searchedTypes.length === targetTypes.length &&
-      searchedTypes.every((type) => targetTypes.includes(type));
+    if (!searchedType) {
+      return !targetTypeAtSameSlot ? "green" : "red";
+    }
 
-    if (hasSameTypes) {
+    if (searchedType === targetTypeAtSameSlot) {
       return "green";
     }
 
-    const hasCommonType = searchedTypes.some((type) => targetTypes.includes(type));
+    if (targetTypes.includes(searchedType)) {
+      return "yellow";
+    }
 
-    return hasCommonType ? "yellow" : "red";
+    return "red";
   };
 
-  const typesTone = randomPokemon ? verifyTypes(pokemonTypes, randomPokemonTypes) : "green";
+  const type1Tone = randomPokemon
+    ? verifyTypeSlot(
+        pokemonTypes[0],
+        randomPokemonTypes[0],
+        randomPokemonTypes,
+      )
+    : "green";
+  const type2Tone = randomPokemon
+    ? verifyTypeSlot(
+        pokemonTypes[1],
+        randomPokemonTypes[1],
+        randomPokemonTypes,
+      )
+    : "green";
 
   return (
     <div className="pokemon-result-line">
@@ -59,13 +82,16 @@ export default function PokemonResultLine({
           alt={pokemon.name}
         />
       </PokemonInfoCard>
-      <PokemonInfoCard tone={typesTone}>
+      <PokemonInfoCard tone={type1Tone}>
         {pokemon.types[0].type.name}
       </PokemonInfoCard>
-      <PokemonInfoCard tone={typesTone}>
+      <PokemonInfoCard tone={type2Tone}>
         {pokemon.types[1]?.type.name ?? "-"}
       </PokemonInfoCard>
-      <PokemonInfoCard
+      <PokemonInfoCard tone={type2Tone}>
+        {pokemon.types[1]?.type.name ?? "-"}
+      </PokemonInfoCard>
+      {/* <PokemonInfoCard
         tone={
           randomPokemon
             ? verifyField(
@@ -76,16 +102,17 @@ export default function PokemonResultLine({
         }
       >
         {pokemon.location_area_encounters}
-      </PokemonInfoCard>
+      </PokemonInfoCard> */}
       <PokemonInfoCard
         tone={randomPokemon ? verifyField(pokemon.id, randomPokemon.id) : "green"}
       >
         {pokemon.id.toString()}
       </PokemonInfoCard>
+      <PokemonInfoCard tone="red">-</PokemonInfoCard> {/* TODO stade évolution, pas encore implémenté  */}
       <PokemonInfoCard
         tone={
           randomPokemon
-            ? verifyField(pokemon.height, randomPokemon.height)
+            ? verifyExactField(pokemon.height, randomPokemon.height)
             : "green"
         }
       >
@@ -94,7 +121,7 @@ export default function PokemonResultLine({
       <PokemonInfoCard
         tone={
           randomPokemon
-            ? verifyField(pokemon.weight, randomPokemon.weight)
+            ? verifyExactField(pokemon.weight, randomPokemon.weight)
             : "green"
         }
       >

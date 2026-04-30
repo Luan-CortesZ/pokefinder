@@ -2,6 +2,9 @@ import { type TransitionEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RegionButton from "./RegionButton";
 import "./styles/RegionPicker.scss";
+import arrowUp from "../../../assets/images/fleche-vers-le-haut.png";
+import arrowDown from "../../../assets/images/fleche-vers-le-bas.png";
+
 
 const REGIONS = [
   "Kanto",
@@ -15,6 +18,18 @@ const REGIONS = [
   "Paldea",
   "Toutes",
 ];
+
+const REGION_IDS: Record<string, string> = {
+  Kanto: "1",
+  Johto: "2",
+  Hoenn: "3",
+  Sinnoh: "4",
+  Unova: "5",
+  Kalos: "6",
+  Alola: "7",
+  Galar: "8",
+  Paldea: "9",
+};
 
 type Direction = -1 | 0 | 1;
 
@@ -104,7 +119,7 @@ export default function RegionPicker() {
         onClick={handlePreviousClick}
         type="button"
       >
-        Up
+        <img src={arrowUp} />
       </button>
 
       <div className="region-picker-content">
@@ -134,7 +149,17 @@ export default function RegionPicker() {
 
         {openRegion && (
           <div className="region-actions" aria-label={`Actions ${openRegion}`}>
-            <button onClick={() => navigate("/find-pokemon")} type="button">
+            <button
+              onClick={() =>
+                navigate("/find-pokemon", {
+                  state: {
+                    regionName: openRegion,
+                    regionId: REGION_IDS[openRegion] ?? "1",
+                  },
+                })
+              }
+              type="button"
+            >n b
               Find pokemon
             </button>
             <button type="button">Find TCG Card</button>
@@ -149,8 +174,8 @@ export default function RegionPicker() {
         disabled={isAnimating}
         onClick={handleNextClick}
         type="button"
-      >
-        Down
+      >        
+        <img src={arrowDown} />
       </button>
     </div>
   );

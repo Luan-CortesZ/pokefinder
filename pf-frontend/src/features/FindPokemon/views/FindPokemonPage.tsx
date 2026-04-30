@@ -1,20 +1,27 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { PokemonService } from "../../../services/pokemon.service";
 import "./styles/FindPokemonPage.scss";
 import type { Pokemon } from "../../../models/pokemon.model";
 import PokemonResultLine from "./PokemonResultLine";
 import PokemonSearch from "../PokemonSearch";
 
-// ajouter un champ de recherche, et quand ça recherche le pokemon, ça liste
-// les pokemons qui correspondent aux lettres affichés dans la texteBox.
-// Dans la barre de recherche on affiche le name et le sprite
-// Quand on le sélectionne ça l'ajoute dans le tableau result
+type FindPokemonLocationState = {
+  regionId?: string;
+  regionName?: string;
+};
 
 export default function FindPokemonPage() {
+  const location = useLocation();
+  const locationState = (location.state as FindPokemonLocationState | null) ?? null;
+  const regionId = locationState?.regionId ?? "1";
+  const regionName = locationState?.regionName ?? "Kanto";
+
   const [randomPokemon, setRandomPokemon] = useState<Pokemon>();
   const [pokemonSelected, setPokemonSelected] = useState<Pokemon>();
-  // utiliser quand on va faire la recherche de pokemon pour afficher ceux dispo
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
+
   const handlePokemonSelected = (pokemonName: string | null) => {
     const selected = pokemons.find((p) => p.name === pokemonName);
 
@@ -29,34 +36,29 @@ export default function FindPokemonPage() {
       setPokemons((prev) => prev.filter((pokemon) => pokemon.name !== selected.name));
     }
   };
-  const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
-
-  // créer une fonction comparePokemon qui compare le pokemon choisi random et le selected
-
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const pokemons = await PokemonService.getPokemonsByRegion(
-          (2),
-        );
-        setPokemons(pokemons);
-        const randomIndex = Math.floor(Math.random() * pokemons.length);
-        setRandomPokemon(pokemons[randomIndex]);
+        const regionPokemons = await PokemonService.getPokemonsByRegion(regionId);
+        setPokemons(regionPokemons);
+        setPokemonResearched([]);
+        setPokemonSelected(undefined);
+
+        const randomIndex = Math.floor(Math.random() * regionPokemons.length);
+        setRandomPokemon(regionPokemons[randomIndex]);
       } catch (err) {
         console.error("Erreur lors du chargement", err);
       }
     };
 
     fetchData();
-  }, []);
-
-
+  }, [regionId]);
 
   return (
     <section className="find-pokemon-page">
       <h1>Find Pokemon</h1>
+      <h2>{regionName}</h2>
 
       <PokemonSearch
         pokemons={pokemons}
@@ -72,10 +74,9 @@ export default function FindPokemonPage() {
           <span>Habitat</span>
           <span>Couleurs</span>
           <span>Stade evolution</span>
-          <span>Hauteur</span>
-          <span>Poids</span>
+          <span>Hauteur [m]</span>
+          <span>Poids [kg]</span>
         </div>
-
 
         <div className="pokemon-results-list">
           {pokemonResearched.map((pokemon, index) => (

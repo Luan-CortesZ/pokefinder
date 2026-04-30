@@ -147,11 +147,18 @@
   min-width: 72px;
   border: none;
   border-radius: 999px;
-  padding: 0.65rem 1rem;
+  padding: 0.45rem 0.7rem;
   background: #232323;
   color: #fff7de;
   font-weight: 700;
   cursor: pointer;
+}
+
+.arrow-btn img {
+  display: block;
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
 }
 
 .arrow-btn:disabled {
