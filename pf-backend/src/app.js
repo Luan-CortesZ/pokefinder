@@ -10,7 +10,6 @@ const { connectDB } = require('./config/database');
 const passport = require('passport');
 require('./config/passport')(passport);
 
-const pokemonRoutes = require('./routes/pokemon.routes');
 const authRoutes = require('./routes/auth.routes');
 const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
