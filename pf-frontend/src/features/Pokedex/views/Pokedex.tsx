@@ -17,7 +17,7 @@ export default function Pokedex() {
       const fetchData = async () => {
           setLoading(true);
           try {
-              const data = await PokemonService.getPokemonsByRegion((region + 1).toString());
+              const data = await PokemonService.getPokemonsByRegion((region + 1));
               setPokemons(data);
           } catch (err) {
               console.error("Erreur lors du chargement", err);

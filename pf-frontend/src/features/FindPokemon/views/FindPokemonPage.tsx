@@ -39,7 +39,7 @@ export default function FindPokemonPage() {
     const fetchData = async () => {
       try {
         const pokemons = await PokemonService.getPokemonsByRegion(
-          (2).toString(), // sélectionne les pokemons d'une région spécifique, ici la région 2 (Johto)
+          (2),
         );
         setPokemons(pokemons);
         const randomIndex = Math.floor(Math.random() * pokemons.length);
