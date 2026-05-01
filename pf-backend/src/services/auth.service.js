@@ -13,7 +13,6 @@ exports.login = async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "Identifiants invalides"  });
     }
-
     req.logIn(user, (err) => {
       if (err) return next(err);
       console.log("Utilisateur connecté:", user);

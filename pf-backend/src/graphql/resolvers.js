@@ -7,7 +7,6 @@ const resolvers = {
   Query: {
     getPokemonsByRegion: async (_, {generationId}) => {
       const cacheKey = `region-${generationId}`;
-      console.log("adwqdwqdwq")
       const cachedData = myCache.get(cacheKey);
       if (cachedData) {
         console.log("Données servies depuis le cache");

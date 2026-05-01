@@ -11,6 +11,7 @@ const passport = require('passport');
 require('./config/passport')(passport);
 
 const authRoutes = require('./routes/auth.routes');
+const userRoutes = require('./routes/user.routes');
 const typeDefs = require('./graphql/schema');
 const resolvers = require('./graphql/resolvers');
 
@@ -47,6 +48,7 @@ const startServer = async () => {
 
   
     app.use('/api/auth', authRoutes);
+    app.use('/api/user', userRoutes);
 
     app.use(
       '/graphql',

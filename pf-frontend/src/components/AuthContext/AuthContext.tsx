@@ -12,8 +12,8 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<any | null>(null);
-  const [isLoading, setIsLoading] = useState(true); // Ajout de l'état de chargement
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const savedUser = localStorage.getItem('poke_user');
     if (savedUser) {
