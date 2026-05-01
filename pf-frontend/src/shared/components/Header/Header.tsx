@@ -25,7 +25,7 @@ export default function Header() {
                         <li className="user-info">
                             <div className="user-meta">
                                 <span className="trainer-label">Trainer</span>
-                                <span className="trainer-name">{user.name}</span>
+                                <span className="trainer-name">{user?.name}</span>
                             </div>
                             
                             <div className="avatar-menu-wrap">

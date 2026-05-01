@@ -1,20 +1,25 @@
 import { createContext, useContext, useState, useEffect, type FC, type ReactNode } from 'react';
+import type { User } from '../../models/user.model';
 
 interface AuthContextType {
-  user: any | null;
+  user: User | null;
   isAuthenticated: boolean;
   login: (userData: any) => void;
   logout: () => void;
+  isLoading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<any | null>(null);
-
+  const [isLoading, setIsLoading] = useState(true); // Ajout de l'état de chargement
   useEffect(() => {
     const savedUser = localStorage.getItem('poke_user');
-    if (savedUser) setUser(JSON.parse(savedUser));
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+    }
+    setIsLoading(false);
   }, []);
 
   const login = (userData: any) => {
@@ -28,7 +33,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout }}>
+    <AuthContext.Provider value={{ user, isAuthenticated: !!user, login, logout, isLoading }}>
       {children}
     </AuthContext.Provider>
   );

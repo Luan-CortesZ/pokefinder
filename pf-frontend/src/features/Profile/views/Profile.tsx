@@ -1,7 +1,7 @@
 import './styles/Profile.scss'
 import cardImage from '../../../assets/images/card-example.png';
 import Avatar from '@mui/material/Avatar';
-
+import { useAuth } from '../../../components/AuthContext/AuthContext';
 const team = [
   { name: 'Pikachu', type: ['https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/13.png'], level: 43 },
   { name: 'Dracaufeu', type: ['https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/10.png', 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-viii/sword-shield/3.png'], level: 52 },
@@ -12,6 +12,7 @@ const team = [
 ]
 
 export default function Profile() {
+  const { user } = useAuth();
   return (
     <div className="profile-container">
       
@@ -27,9 +28,8 @@ export default function Profile() {
 
           <div className="trainer-main">
             <p className="trainer-role">Pokémon Trainer</p>
-            <h1>John Doe</h1>
+            <h1>{user?.name}</h1>
             <div className="trainer-meta">
-              <span>Region: Kanto</span>
               <span>Trainer ID: 7421-9912</span>
             </div>
           </div>
