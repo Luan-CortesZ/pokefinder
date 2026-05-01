@@ -19,9 +19,8 @@ const GET_POKEMONS_BY_REGION = gql`
         front_default
       }
       types {
-        type {
-          name
-        }
+        name
+        url
       }
     }
   }

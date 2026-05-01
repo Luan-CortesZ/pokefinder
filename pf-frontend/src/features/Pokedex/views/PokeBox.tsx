@@ -25,9 +25,9 @@ export default function PokeBox(props: PokeBoxProps) {
           {pokemon.types.map((type) => (
             <img
               className="pokebox-type-img"
-              key={type.type.name}
-              src={type.type.url}
-              alt={type.type.name}
+              key={type.name}
+              src={type.url}
+              alt={type.name}
             />
           ))}
         </div>

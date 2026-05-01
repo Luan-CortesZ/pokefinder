@@ -7,7 +7,7 @@ const resolvers = {
   Query: {
     getPokemonsByRegion: async (_, {generationId}) => {
       const cacheKey = `region-${generationId}`;
-      
+      console.log("adwqdwqdwq")
       const cachedData = myCache.get(cacheKey);
       if (cachedData) {
         console.log("Données servies depuis le cache");
@@ -36,6 +36,7 @@ const resolvers = {
                 type: type {
                   translated_name: typenames(where: {language: {name: {_eq: "fr"}}}) {
                     name
+                    type_id
                   }
                 }
               }
@@ -74,7 +75,8 @@ const resolvers = {
               front_default: details?.pokemonsprites[0]?.front_default
             },
             types: details?.pokemontypes.map(t => ({
-              type: { name: t.type?.translated_name[0]?.name }
+              name: t.type?.translated_name[0]?.name,
+              url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-ix/scarlet-violet/${t.type?.translated_name[0]?.type_id}.png`
             })),
             habitat: s.pokemonhabitat?.pokemonhabitatnames[0]?.name,
             color: s.pokemoncolor?.pokemoncolornames[0]?.name

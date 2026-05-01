@@ -16,12 +16,7 @@ export interface Sprites {
   back_shiny?: string;
   front_shiny?: string;
 }
-
 export interface Type {
-  type: TypeDetails;
-}
-
-export interface TypeDetails {
   name: string;
   url?: string;
 }

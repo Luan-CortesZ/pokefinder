@@ -1,7 +1,6 @@
 const typeDefs = `#graphql
   type Sprite { front_default: String }
-  type TypeDetails { name: String }
-  type PokemonType { type: TypeDetails }
+  type PokemonType { name: String, url: String }
 
   type Pokemon {
     id: Int

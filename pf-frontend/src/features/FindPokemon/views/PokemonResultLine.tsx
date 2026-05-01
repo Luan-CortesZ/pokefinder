@@ -10,8 +10,8 @@ export default function PokemonResultLine({
   pokemon,
   randomPokemon,
 }: PokemonResultLineProps) {
-  const pokemonTypes = pokemon.types.map((entry) => entry.type.name);
-  const randomPokemonTypes = randomPokemon?.types.map((entry) => entry.type.name) ?? [];
+  const pokemonTypes = pokemon.types.map((entry) => entry.name);
+  const randomPokemonTypes = randomPokemon?.types.map((entry) => entry.name) ?? [];
 
   const verifyField = (
     searchedValue: string | number,
@@ -83,13 +83,13 @@ export default function PokemonResultLine({
         />
       </PokemonInfoCard>
       <PokemonInfoCard tone={type1Tone}>
-        {pokemon.types[0].type.name}
+        {pokemon.types[0].name}
       </PokemonInfoCard>
       <PokemonInfoCard tone={type2Tone}>
-        {pokemon.types[1]?.type.name ?? "-"}
+        {pokemon.types[1]?.name ?? "-"}
       </PokemonInfoCard>
       <PokemonInfoCard tone={type2Tone}>
-        {pokemon.types[1]?.type.name ?? "-"}
+        {pokemon.types[1]?.name ?? "-"}
       </PokemonInfoCard>
       {/* <PokemonInfoCard
         tone={
