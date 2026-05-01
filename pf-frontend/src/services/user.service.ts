@@ -21,4 +21,23 @@ export const UserService = {
             throw error;
         }
     },
+    getUsersPokemon: async (userId: string): Promise<any> => {
+        try {
+            const response = await fetch(`${API_URL}/pokemons/${userId}`, {
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Erreur de connexion');
+            }
+            const data = await response.json();
+            return await data.pokemons;
+        } catch (error) {
+            console.error("Erreur service auth:", error);
+            throw error;
+        }
+    },
 };

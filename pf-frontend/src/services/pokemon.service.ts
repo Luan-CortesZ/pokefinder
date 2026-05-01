@@ -17,6 +17,7 @@ const GET_POKEMONS_BY_REGION = gql`
       color
       sprites {
         front_default
+        front_shiny
       }
       types {
         name

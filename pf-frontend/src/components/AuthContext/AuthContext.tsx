@@ -44,3 +44,13 @@ export const useAuth = () => {
   if (!context) throw new Error("useAuth doit être utilisé dans un AuthProvider");
   return context;
 };
+
+export const useAuthenticatedUser = () => {
+  const { user, isAuthenticated } = useAuth();
+  
+  if (!user || !isAuthenticated) {
+    throw new Error("Ce hook ne doit être utilisé que dans des pages protégées.");
+  }
+
+  return user;
+};

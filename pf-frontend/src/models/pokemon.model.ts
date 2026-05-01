@@ -20,3 +20,9 @@ export interface Type {
   name: string;
   url?: string;
 }
+
+export interface CapturedPokemon {
+  isShiny: boolean;
+  level: number;
+  pokemonId: number;
+}

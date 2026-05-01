@@ -1,5 +1,5 @@
 const typeDefs = `#graphql
-  type Sprite { front_default: String }
+  type Sprite { front_default: String, front_shiny: String }
   type PokemonType { name: String, url: String }
 
   type Pokemon {

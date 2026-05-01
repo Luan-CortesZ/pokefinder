@@ -1,23 +1,32 @@
-import type { Pokemon } from "../../../models/pokemon.model";
+import { useAuth } from "../../../components/AuthContext/AuthContext";
+import { UserService } from "../../../services/user.service";
+import type { CapturedPokemon, Pokemon } from "../../../models/pokemon.model";
 import './styles/PokeBox.scss';
+import sparkleIcon from '../../../assets/images/sparkle.png';
 
 interface PokeBoxProps {
-  isHidden?: boolean;
-  pokemon: Pokemon
+  pokemon: Pokemon;
+  captured: CapturedPokemon | undefined;
 }
 
 export default function PokeBox(props: PokeBoxProps) {
-  const {isHidden, pokemon } = props;
+  const {pokemon, captured } = props;
+  const {user} = useAuth();
   const formattedId = `#${pokemon.id.toString().padStart(3, "0")}`;
+  async function capturePokemon(){
+    if(user) await UserService.capturePokemon(user._id, pokemon.id )
+  }
 
   return (
     <div className="pokebox">
+      {captured?.isShiny ? <img className="shiny-ind" src={sparkleIcon} alt="" /> : null }
       <div className="pokebox-top">
         <div className="pokebox-img-wrapper">
           <img
+            onClick={capturePokemon}  
             className="pokebox-img"
-            style={{ filter: isHidden ? 'brightness(0)' : 'none' }}
-            src={pokemon.sprites.front_default}
+            style={{ filter: !captured ? 'brightness(0)' : 'none' }}
+            src={captured?.isShiny ? pokemon.sprites.front_shiny : pokemon.sprites.front_default}
             alt={pokemon.name}
           />
         </div>
@@ -33,7 +42,7 @@ export default function PokeBox(props: PokeBoxProps) {
         </div>
       </div>
       <div className="pokebox-footer">
-        {isHidden ? '???' : <span className="pokebox-name">{pokemon.name}</span>}
+        {!captured ? '???' : <span className="pokebox-name">{pokemon.name}</span>}
         <span className="pokebox-id">{formattedId}</span>
       </div>
     </div>

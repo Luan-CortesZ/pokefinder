@@ -1,17 +1,36 @@
 import './styles/Pokedex.scss'
 import { Box, Pagination } from '@mui/material'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { PokeTab, PokeTabs } from './PokeTabs';
 import PokePanel from './PokePanel';
 import PokeBox from './PokeBox';
 import { PokemonService } from '../../../services/pokemon.service';
-import type { Pokemon } from '../../../models/pokemon.model';
+import type { CapturedPokemon, Pokemon } from '../../../models/pokemon.model';
+import { UserService } from '../../../services/user.service';
+import { useAuth, useAuthenticatedUser } from '../../../components/AuthContext/AuthContext';
 
 export default function Pokedex() {
   const [region, setRegion] = useState(0);
   const [page, setPage] = useState(1);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  const [userPokemons, setUserPokemons] = useState<CapturedPokemon[]>([]);
   const [loading, setLoading] = useState(true);
+  const user = useAuthenticatedUser()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await UserService.getUsersPokemon(user._id);
+        setUserPokemons(Array.isArray(data) ? data : []);
+      } catch (err) {
+        console.error("Erreur lors du chargement", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [user._id])
 
   useEffect(() => {
       const fetchData = async () => {
@@ -83,7 +102,7 @@ export default function Pokedex() {
       <Box sx={{ flex: 1, overflowY: 'auto', minHeight: 0, background: 'radial-gradient(ellipse at top, #0a3a5c 0%, #001e3c 100%)' }}>
         <PokePanel value={region} index={region}>
           {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-            <PokeBox key={pokemon.id} pokemon={pokemon} isHidden={true} />
+            <PokeBox key={pokemon.id} pokemon={pokemon} captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)} />
           ))}
         </PokePanel>
       </Box>

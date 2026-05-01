@@ -16,7 +16,7 @@ const resolvers = {
       const query = `
         query samplePokeAPIquery($gen: Int!) {
           gen_species: pokemonspecies(
-            where: {generation: { region: {id: {_eq: $gen}}}}
+            where: {generation: { id: {_eq: $gen}}}
             order_by: {id: asc}
           ) {
             id
@@ -41,6 +41,7 @@ const resolvers = {
               }
               pokemonsprites: pokemonsprites {
                 front_default: sprites(path: "front_default")
+                front_shiny: sprites(path: "front_shiny")
               }
             }
             pokemoncolor {
@@ -71,7 +72,8 @@ const resolvers = {
             height: details?.height,
             weight: details?.weight,
             sprites: {
-              front_default: details?.pokemonsprites[0]?.front_default
+              front_default: details?.pokemonsprites[0]?.front_default,
+              front_shiny: details?.pokemonsprites[0]?.front_shiny
             },
             types: details?.pokemontypes.map(t => ({
               name: t.type?.translated_name[0]?.name,
