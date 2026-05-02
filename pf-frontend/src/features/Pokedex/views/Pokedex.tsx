@@ -8,7 +8,6 @@ import { PokemonService } from '../../../services/pokemon.service';
 import type { CapturedPokemon, Pokemon } from '../../../models/pokemon.model';
 import { UserService } from '../../../services/user.service';
 import { useAuthenticatedUser } from '../../../components/AuthContext/AuthContext';
-
 export default function Pokedex() {
   const [region, setRegion] = useState(0);
   const [page, setPage] = useState(1);
@@ -98,23 +97,12 @@ export default function Pokedex() {
           <PokeTab key={region} label={region} />
         ))}
       </PokeTabs>
-
-      <Box sx={{ flex: 1, overflowY: 'auto', minHeight: 0, background: 'rgb(75, 163, 204)' }}>
-        <PokePanel value={region} index={region}>
-          {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-            <PokeBox key={pokemon.id} pokemon={pokemon} captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)} />
-          ))}
-        </PokePanel>
-      </Box>
-
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'center',
           py: 1.5,
           background: 'rgb(28, 100, 162)',
-          borderTop: '1px solid rgba(61, 224, 211, 0.15)',
-          boxShadow: 'inset 0 0 0 1px rgba(61, 224, 211, 0.08)',
           zIndex: 10,
         }}
       >
@@ -130,8 +118,8 @@ export default function Pokedex() {
               borderColor: 'rgba(61, 224, 224, 0.18)',
               transition: 'all 0.2s ease',
               '&:hover': {
-                background: 'rgba(28, 117, 173, 0.61)',
                 borderColor: 'rgba(61, 170, 224, 0.4)',
+                background: 'rgba(28, 117, 173, 0.61)',
                 color: '#fff',
               },
               '&.Mui-selected': {
@@ -146,6 +134,24 @@ export default function Pokedex() {
           }}
         />
       </Box>
+
+      <Box sx={{ 
+        flex: 1, 
+        overflowY: 'auto', 
+        minHeight: 0, 
+        backgroundImage: 'radial-gradient(circle, #4a90e2 0%, #357abd 100%)',
+        backgroundSize: '150px',
+        backgroundRepeat: 'repeat',
+        p: 3 
+      }}>
+        <PokePanel value={region} index={region}>
+          {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
+            <PokeBox key={pokemon.id} pokemon={pokemon} captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)} />
+          ))}
+        </PokePanel>
+      </Box>
+
+      
     </Box>
   )
 }

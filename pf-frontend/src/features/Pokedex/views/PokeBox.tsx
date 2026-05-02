@@ -3,6 +3,7 @@ import { UserService } from "../../../services/user.service";
 import type { CapturedPokemon, Pokemon } from "../../../models/pokemon.model";
 import './styles/PokeBox.scss';
 import sparkleIcon from '../../../assets/images/sparkle.png';
+import pokeballIcon from '../../../assets/images/pokeball.svg';
 
 interface PokeBoxProps {
   pokemon: Pokemon;
@@ -20,6 +21,7 @@ export default function PokeBox(props: PokeBoxProps) {
   return (
     <div className="pokebox">
       {captured?.isShiny ? <img className="shiny-ind" src={sparkleIcon} alt="" /> : null }
+      {captured ? <img className="capture-ind" src={pokeballIcon} alt="" /> : null }
       <div className="pokebox-top">
         <div className="pokebox-img-wrapper">
           <img
