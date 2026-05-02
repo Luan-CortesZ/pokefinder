@@ -15,10 +15,6 @@ export default function Profile() {
   const { user } = useAuth();
   return (
     <div className="profile-container">
-      
-      <section className="favorite-card-section">
-        <img className="favorite-card" src={cardImage} alt="" />
-      </section>
       <section className="profile-page">
         <div className="profile-hero">
           <Avatar

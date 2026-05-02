@@ -13,8 +13,7 @@ export const PokeTabs = styled((props: PokeTabsProps) => (
     height: '100%',
     top: 0,
     borderRadius: '10px',
-    background: 'linear-gradient(135deg, rgba(61, 224, 211, 0.28) 0%, rgba(57, 140, 179, 0.5) 100%)',
-    boxShadow: 'inset 0 0 0 1px rgba(61, 224, 211, 0.4)',
+    background: 'rgb(57, 165, 215)',
     zIndex: 0,
     transition: 'all 0.35s cubic-bezier(0.4, 0, 0.2, 1)',
   },
@@ -32,11 +31,11 @@ export const PokeTab = styled((props: PokeTabProps) => (
 ))(() => ({
   textTransform: 'none',
   color: 'rgba(255,255,255,0.7)',
-  fontWeight: 600,
   borderRadius: '10px',
   transition: 'color 0.35s ease',
   '&.Mui-selected': {
     color: '#fff',
+    fontWeight: 600,
   },
   '&.Mui-focusVisible': {
     background: 'rgba(100, 95, 228, 0.32)',

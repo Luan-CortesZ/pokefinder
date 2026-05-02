@@ -42,7 +42,7 @@ export default function PokeBox(props: PokeBoxProps) {
         </div>
       </div>
       <div className="pokebox-footer">
-        {!captured ? '???' : <span className="pokebox-name">{pokemon.name}</span>}
+        <span className="pokebox-name"> {!captured ? '???' : pokemon.name}</span>
         <span className="pokebox-id">{formattedId}</span>
       </div>
     </div>

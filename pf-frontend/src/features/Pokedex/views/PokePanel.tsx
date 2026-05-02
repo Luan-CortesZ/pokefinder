@@ -21,8 +21,6 @@ export default function PokePanel(props: PokePanelProps) {
           sx={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))',
-            gap: 2,
-            p: { xs: 2, sm: 3 }
           }}
         >
           {children}
