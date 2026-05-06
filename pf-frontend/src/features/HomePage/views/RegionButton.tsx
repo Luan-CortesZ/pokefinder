@@ -1,6 +1,6 @@
 type RegionButtonProps = {
-  region: number;
-  onSelect?: (region: number) => void;
+  region: string;
+  onSelect?: (region: string) => void;
   isOpen?: boolean;
 };
 

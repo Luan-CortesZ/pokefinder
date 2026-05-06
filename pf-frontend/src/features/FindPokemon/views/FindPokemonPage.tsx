@@ -1,50 +1,15 @@
-import { useState } from "react";
-import { gql } from "@apollo/client";
-import { useQuery } from "@apollo/client/react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import "./styles/FindPokemonPage.scss";
 import type { Pokemon } from "../../../models/pokemon.model";
 import PokemonResultLine from "./PokemonResultLine";
 import PokemonSearch from "../PokemonSearch";
+import { PokemonService } from "../../../services/pokemon.service";
 
 type FindPokemonLocationState = {
   regionId?: number;
   regionName?: string;
 };
-
-type GetPokemonsByRegionResponse = {
-  getPokemonsByRegion: Pokemon[];
-};
-
-type GetPokemonsByRegionVariables = {
-  gen: number;
-};
-
-type FindPokemonGameProps = {
-  regionPokemons: Pokemon[];
-};
-
-const GET_POKEMONS_BY_REGION = gql`
-  query GetPokemons($gen: Int!) {
-    getPokemonsByRegion(generationId: $gen) {
-      id
-      name
-      height
-      weight
-      habitat
-      color
-      evolutionStage
-      sprites {
-        front_default
-      }
-      types {
-        type {
-          name
-        }
-      }
-    }
-  }
-`;
 
 export default function FindPokemonPage() {
   const location = useLocation();
@@ -53,33 +18,32 @@ export default function FindPokemonPage() {
   const parsedRegionId = (locationState?.regionId ?? "1", 10);
   const regionId = Number.isNaN(parsedRegionId) ? 1 : parsedRegionId;
   const regionName = locationState?.regionName ?? "Kanto";
-  const { data, loading, error } = useQuery<
-    GetPokemonsByRegionResponse,
-    GetPokemonsByRegionVariables
-  >(GET_POKEMONS_BY_REGION, {
-    variables: { gen: regionId },
-    fetchPolicy: "network-only",
-  });
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await PokemonService.getPokemonsByRegion(regionId + 1);
+        setPokemons(data);
+      } catch (err) {
+        console.error("Erreur lors du chargement", err);
+      }
+    };
+
+    fetchData();
+  }, [regionId]);
 
   return (
     <section className="find-pokemon-page">
       <h1>Find Pokemon</h1>
       <h2>{regionName}</h2>
 
-      {loading && <p>Chargement des Pokemon...</p>}
-      {error && <p>Erreur lors du chargement des Pokemon.</p>}
-
-      {data && (
-        <FindPokemonGame
-          key={regionId}
-          regionPokemons={data.getPokemonsByRegion}
-        />
-      )}
+      {pokemons && <FindPokemonGame regionPokemons={pokemons} />}
     </section>
   );
 }
 
-function FindPokemonGame({ regionPokemons }: FindPokemonGameProps) {
+function FindPokemonGame({ regionPokemons }: Pokemon[]) {
   const [randomPokemon] = useState<Pokemon | undefined>(() => {
     if (regionPokemons.length === 0) {
       return undefined;
