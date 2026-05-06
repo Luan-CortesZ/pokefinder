@@ -24,12 +24,12 @@ export default function PokemonSearch(props: PokemonSearchProps) {
       
       <Autocomplete
         value={value}
-        onChange={(event: any, newValue: string | null) => {
+        onChange={(_, newValue: string | null) => {
           setValue(newValue);
           onPokemonSelected(newValue);
         }}
         inputValue={inputValue}
-        onInputChange={(event, newInputValue) => {
+        onInputChange={(_, newInputValue) => {
           setInputValue(newInputValue);
         }}
         id="controllable-states-demo"

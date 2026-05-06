@@ -11,7 +11,9 @@ export default function PokemonResultLine({
   randomPokemon,
 }: PokemonResultLineProps) {
   const pokemonTypes = pokemon.types.map((entry) => entry.name);
-  const randomPokemonTypes = randomPokemon?.types.map((entry) => entry.name) ?? [];
+  const randomPokemonTypes =
+    randomPokemon?.types.map((entry) => entry.name) ?? [];
+  const formatMetricValue = (value: number) => (value / 10).toString();
 
   const verifyField = (
     searchedValue: string | number,
@@ -21,10 +23,7 @@ export default function PokemonResultLine({
       return "green";
     }
 
-    if (
-      typeof searchedValue === "number" &&
-      typeof randomValue === "number"
-    ) {
+    if (typeof searchedValue === "number" && typeof randomValue === "number") {
       return searchedValue < randomValue ? "yellow" : "red";
     }
 
@@ -59,18 +58,10 @@ export default function PokemonResultLine({
   };
 
   const type1Tone = randomPokemon
-    ? verifyTypeSlot(
-        pokemonTypes[0],
-        randomPokemonTypes[0],
-        randomPokemonTypes,
-      )
+    ? verifyTypeSlot(pokemonTypes[0], randomPokemonTypes[0], randomPokemonTypes)
     : "green";
   const type2Tone = randomPokemon
-    ? verifyTypeSlot(
-        pokemonTypes[1],
-        randomPokemonTypes[1],
-        randomPokemonTypes,
-      )
+    ? verifyTypeSlot(pokemonTypes[1], randomPokemonTypes[1], randomPokemonTypes)
     : "green";
 
   return (
@@ -88,27 +79,36 @@ export default function PokemonResultLine({
       <PokemonInfoCard tone={type2Tone}>
         {pokemon.types[1]?.name ?? "-"}
       </PokemonInfoCard>
-      <PokemonInfoCard tone={type2Tone}>
-        {pokemon.types[1]?.name ?? "-"}
-      </PokemonInfoCard>
-      {/* <PokemonInfoCard
+      <PokemonInfoCard
         tone={
           randomPokemon
-            ? verifyField(
-                pokemon.location_area_encounters,
-                randomPokemon.location_area_encounters,
+            ? verifyExactField(
+                pokemon.habitat ?? "-",
+                randomPokemon.habitat ?? "-",
               )
             : "green"
         }
       >
-        {pokemon.location_area_encounters}
-      </PokemonInfoCard> */}
-      <PokemonInfoCard
-        tone={randomPokemon ? verifyField(pokemon.id, randomPokemon.id) : "green"}
-      >
-        {pokemon.id.toString()}
+        {pokemon.habitat ?? "-"}
       </PokemonInfoCard>
-      <PokemonInfoCard tone="red">-</PokemonInfoCard> {/* TODO stade évolution, pas encore implémenté  */}
+      <PokemonInfoCard
+        tone={
+          randomPokemon
+            ? verifyExactField(pokemon.color ?? "-", randomPokemon.color ?? "-")
+            : "green"
+        }
+      >
+        {pokemon.color ?? "-"}
+      </PokemonInfoCard>
+      <PokemonInfoCard
+        tone={
+          randomPokemon
+            ? verifyField(pokemon.evolutionStage, randomPokemon.evolutionStage)
+            : "green"
+        }
+      >
+        {pokemon.evolutionStage.toString()}
+      </PokemonInfoCard>
       <PokemonInfoCard
         tone={
           randomPokemon
@@ -116,7 +116,7 @@ export default function PokemonResultLine({
             : "green"
         }
       >
-        {pokemon.height.toString()}
+        {formatMetricValue(pokemon.height)}
       </PokemonInfoCard>
       <PokemonInfoCard
         tone={
@@ -125,7 +125,7 @@ export default function PokemonResultLine({
             : "green"
         }
       >
-        {pokemon.weight.toString()}
+        {formatMetricValue(pokemon.weight)}
       </PokemonInfoCard>
     </div>
   );

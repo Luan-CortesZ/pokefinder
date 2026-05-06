@@ -1,20 +1,20 @@
-import './styles/Pokedex.scss'
-import { Box, Pagination } from '@mui/material'
-import React, { useEffect, useState } from 'react';
-import { PokeTab, PokeTabs } from './PokeTabs';
-import PokePanel from './PokePanel';
-import PokeBox from './PokeBox';
-import { PokemonService } from '../../../services/pokemon.service';
-import type { CapturedPokemon, Pokemon } from '../../../models/pokemon.model';
-import { UserService } from '../../../services/user.service';
-import { useAuthenticatedUser } from '../../../components/AuthContext/AuthContext';
+import "./styles/Pokedex.scss";
+import { Box, Pagination } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { PokeTab, PokeTabs } from "./PokeTabs";
+import PokePanel from "./PokePanel";
+import PokeBox from "./PokeBox";
+import { PokemonService } from "../../../services/pokemon.service";
+import type { CapturedPokemon, Pokemon } from "../../../models/pokemon.model";
+import { UserService } from "../../../services/user.service";
+import { useAuthenticatedUser } from "../../../components/AuthContext/AuthContext";
 export default function Pokedex() {
   const [region, setRegion] = useState(0);
   const [page, setPage] = useState(1);
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [userPokemons, setUserPokemons] = useState<CapturedPokemon[]>([]);
   const [loading, setLoading] = useState(true);
-  const user = useAuthenticatedUser()
+  const user = useAuthenticatedUser();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,22 +29,22 @@ export default function Pokedex() {
       }
     };
     fetchData();
-  }, [user._id])
+  }, [user._id]);
 
   useEffect(() => {
-      const fetchData = async () => {
-          setLoading(true);
-          try {
-              const data = await PokemonService.getPokemonsByRegion((region + 1));
-              setPokemons(data);
-          } catch (err) {
-              console.error("Erreur lors du chargement", err);
-          } finally {
-              setLoading(false);
-          }
-      };
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const data = await PokemonService.getPokemonsByRegion(region + 1);
+        setPokemons(data);
+      } catch (err) {
+        console.error("Erreur lors du chargement", err);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-      fetchData();
+    fetchData();
   }, [region]);
   const itemsPerPage = 30;
   const totalPages = Math.ceil(pokemons.length / itemsPerPage);
@@ -58,7 +58,7 @@ export default function Pokedex() {
     "Kalos",
     "Alola",
     "Galar",
-    "Paldea"
+    "Paldea",
   ];
 
   const scrollPanelToTop = (regionIndex: number) => {
@@ -78,17 +78,19 @@ export default function Pokedex() {
   };
 
   return (
-    <Box sx={{ 
-      height: '100%', 
-      display: 'flex',
-      flexDirection: 'column', 
-      overflow: 'hidden',
-      }}>
+    <Box
+      sx={{
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        overflow: "hidden",
+      }}
+    >
       <PokeTabs
         value={region}
         onChange={handleTabChange}
         variant="scrollable"
-        className='pokedex-tabs'
+        className="pokedex-tabs"
         scrollButtons
         allowScrollButtonsMobile
         aria-label="scrollable force tabs example"
@@ -99,10 +101,10 @@ export default function Pokedex() {
       </PokeTabs>
       <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
+          display: "flex",
+          justifyContent: "center",
           py: 1.5,
-          background: 'rgb(28, 100, 162)',
+          background: "rgb(28, 100, 162)",
           zIndex: 10,
         }}
       >
@@ -113,21 +115,21 @@ export default function Pokedex() {
           variant="outlined"
           shape="rounded"
           sx={{
-            '& .MuiPaginationItem-root': {
-              color: 'rgba(255,255,255,0.6)',
-              borderColor: 'rgba(61, 224, 224, 0.18)',
-              transition: 'all 0.2s ease',
-              '&:hover': {
-                borderColor: 'rgba(61, 170, 224, 0.4)',
-                background: 'rgba(28, 117, 173, 0.61)',
-                color: '#fff',
+            "& .MuiPaginationItem-root": {
+              color: "rgba(255,255,255,0.6)",
+              borderColor: "rgba(61, 224, 224, 0.18)",
+              transition: "all 0.2s ease",
+              "&:hover": {
+                borderColor: "rgba(61, 170, 224, 0.4)",
+                background: "rgba(28, 117, 173, 0.61)",
+                color: "#fff",
               },
-              '&.Mui-selected': {
-                background: 'rgb(57, 165, 215)',
-                color: '#fff',
+              "&.Mui-selected": {
+                background: "rgb(57, 165, 215)",
+                color: "#fff",
                 fontWeight: 700,
-                '&:hover': {
-                  background: 'rgb(41, 130, 170)'
+                "&:hover": {
+                  background: "rgb(41, 130, 170)",
                 },
               },
             },
@@ -135,23 +137,29 @@ export default function Pokedex() {
         />
       </Box>
 
-      <Box sx={{ 
-        flex: 1, 
-        overflowY: 'auto', 
-        minHeight: 0, 
-        backgroundImage: 'radial-gradient(circle, #4a90e2 0%, #357abd 100%)',
-        backgroundSize: '150px',
-        backgroundRepeat: 'repeat',
-        p: 3 
-      }}>
+      <Box
+        sx={{
+          flex: 1,
+          overflowY: "auto",
+          minHeight: 0,
+          backgroundImage: "radial-gradient(circle, #4a90e2 0%, #357abd 100%)",
+          backgroundSize: "150px",
+          backgroundRepeat: "repeat",
+          p: 3,
+        }}
+      >
         <PokePanel value={region} index={region}>
-          {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-            <PokeBox key={pokemon.id} pokemon={pokemon} captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)} />
-          ))}
+          {pokemons
+            .slice((page - 1) * itemsPerPage, page * itemsPerPage)
+            .map((pokemon) => (
+              <PokeBox
+                key={pokemon.id}
+                pokemon={pokemon}
+                captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)}
+              />
+            ))}
         </PokePanel>
       </Box>
-
-      
     </Box>
-  )
+  );
 }

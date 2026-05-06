@@ -4,10 +4,11 @@ export interface Pokemon {
   height: number;
   weight: number;
   habitat: string;
-  color: string; 
+  color: string;
+  evolutionStage: number;
   sprites: Sprites;
   types: Type[];
-  location_area_encounters?: string
+  location_area_encounters?: string;
 }
 
 export interface Sprites {

@@ -11,6 +11,7 @@ const typeDefs = `#graphql
     types: [PokemonType]
     habitat: String
     color: String
+    evolutionStage: Int
   }
 
   type Query {

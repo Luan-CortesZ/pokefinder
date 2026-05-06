@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 import { useLocation } from "react-router-dom";
-import { PokemonService } from "../../../services/pokemon.service";
 import "./styles/FindPokemonPage.scss";
 import type { Pokemon } from "../../../models/pokemon.model";
 import PokemonResultLine from "./PokemonResultLine";
@@ -11,15 +12,83 @@ type FindPokemonLocationState = {
   regionName?: string;
 };
 
+type GetPokemonsByRegionResponse = {
+  getPokemonsByRegion: Pokemon[];
+};
+
+type GetPokemonsByRegionVariables = {
+  gen: number;
+};
+
+type FindPokemonGameProps = {
+  regionPokemons: Pokemon[];
+};
+
+const GET_POKEMONS_BY_REGION = gql`
+  query GetPokemons($gen: Int!) {
+    getPokemonsByRegion(generationId: $gen) {
+      id
+      name
+      height
+      weight
+      habitat
+      color
+      evolutionStage
+      sprites {
+        front_default
+      }
+      types {
+        type {
+          name
+        }
+      }
+    }
+  }
+`;
+
 export default function FindPokemonPage() {
   const location = useLocation();
-  const locationState = (location.state as FindPokemonLocationState | null) ?? null;
-  const regionId = locationState?.regionId ?? 1;
+  const locationState =
+    (location.state as FindPokemonLocationState | null) ?? null;
+  const parsedRegionId = (locationState?.regionId ?? "1", 10);
+  const regionId = Number.isNaN(parsedRegionId) ? 1 : parsedRegionId;
   const regionName = locationState?.regionName ?? "Kanto";
+  const { data, loading, error } = useQuery<
+    GetPokemonsByRegionResponse,
+    GetPokemonsByRegionVariables
+  >(GET_POKEMONS_BY_REGION, {
+    variables: { gen: regionId },
+    fetchPolicy: "network-only",
+  });
 
-  const [randomPokemon, setRandomPokemon] = useState<Pokemon>();
-  const [pokemonSelected, setPokemonSelected] = useState<Pokemon>();
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
+  return (
+    <section className="find-pokemon-page">
+      <h1>Find Pokemon</h1>
+      <h2>{regionName}</h2>
+
+      {loading && <p>Chargement des Pokemon...</p>}
+      {error && <p>Erreur lors du chargement des Pokemon.</p>}
+
+      {data && (
+        <FindPokemonGame
+          key={regionId}
+          regionPokemons={data.getPokemonsByRegion}
+        />
+      )}
+    </section>
+  );
+}
+
+function FindPokemonGame({ regionPokemons }: FindPokemonGameProps) {
+  const [randomPokemon] = useState<Pokemon | undefined>(() => {
+    if (regionPokemons.length === 0) {
+      return undefined;
+    }
+
+    const randomIndex = Math.floor(Math.random() * regionPokemons.length);
+    return regionPokemons[randomIndex];
+  });
+  const [pokemons, setPokemons] = useState<Pokemon[]>(regionPokemons);
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
 
   const handlePokemonSelected = (pokemonName: string | null) => {
@@ -30,36 +99,16 @@ export default function FindPokemonPage() {
     }
 
     setPokemonResearched((prev) => [selected, ...prev]);
-    setPokemonSelected(selected);
 
     if (selected.name !== randomPokemon?.name) {
-      setPokemons((prev) => prev.filter((pokemon) => pokemon.name !== selected.name));
+      setPokemons((prev) =>
+        prev.filter((pokemon) => pokemon.name !== selected.name),
+      );
     }
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const regionPokemons = await PokemonService.getPokemonsByRegion(regionId);
-        setPokemons(regionPokemons);
-        setPokemonResearched([]);
-        setPokemonSelected(undefined);
-
-        const randomIndex = Math.floor(Math.random() * regionPokemons.length);
-        setRandomPokemon(regionPokemons[randomIndex]);
-      } catch (err) {
-        console.error("Erreur lors du chargement", err);
-      }
-    };
-
-    fetchData();
-  }, [regionId]);
-
   return (
-    <section className="find-pokemon-page">
-      <h1>Find Pokemon</h1>
-      <h2>{regionName}</h2>
-
+    <>
       <PokemonSearch
         pokemons={pokemons}
         onPokemonSelected={handlePokemonSelected}
@@ -88,6 +137,6 @@ export default function FindPokemonPage() {
           ))}
         </div>
       </div>
-    </section>
+    </>
   );
 }

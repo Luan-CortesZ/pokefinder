@@ -15,6 +15,7 @@ const GET_POKEMONS_BY_REGION = gql`
       weight
       habitat
       color
+      evolutionStage
       sprites {
         front_default
         front_shiny
@@ -33,6 +34,7 @@ export const PokemonService = {
       const { data } = await client.query<GetPokemonsResponse>({
         query: GET_POKEMONS_BY_REGION,
         variables: { gen: generationId },
+        fetchPolicy: "network-only",
       });
       if (!data) return [];
       return data.getPokemonsByRegion;
