@@ -19,18 +19,21 @@ const resolvers = {
             where: {generation: { id: {_eq: $gen}}}
             order_by: {id: asc}
           ) {
-            id
+            id              
+            evolutionchain {
+              id
+            }
             names: pokemonspeciesnames(where: {language: {name: {_eq: "fr"}}}) {
               name
-            }
-            pokemonhabitat {
-              pokemonhabitatnames(where: {language: {name: {_eq: "fr"}}}) {
-                name
-              }
             }
             pokemons(limit: 1) {
               weight
               height
+              encounters{
+                locationarea{
+                  name
+                }
+              }
               pokemontypes: pokemontypes {
                 type: type {
                   translated_name: typenames(where: {language: {name: {_eq: "fr"}}}) {
@@ -68,6 +71,7 @@ const resolvers = {
           const details = s.pokemons[0];
           return {
             id: s.id,
+            evolutionStage: getEvolutionStage(s, species),
             name: s.names[0]?.name || "Inconnu",
             height: details?.height,
             weight: details?.weight,
@@ -76,10 +80,10 @@ const resolvers = {
               front_shiny: details?.pokemonsprites[0]?.front_shiny
             },
             types: details?.pokemontypes.map(t => ({
-              name: t.type?.translated_name[0]?.name,
+              name: t.type?.translated_name[0]?.name || "Introuvable dans la nature",
               url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-ix/scarlet-violet/${t.type?.translated_name[0]?.type_id}.png`
             })),
-            habitat: s.pokemonhabitat?.pokemonhabitatnames[0]?.name,
+            habitat: details?.encounters[0]?.locationarea?.name.toString(),
             color: s.pokemoncolor?.pokemoncolornames[0]?.name
           };
         });
@@ -94,6 +98,11 @@ const resolvers = {
       }
     }
   }
+}
+
+function getEvolutionStage(currentPokemon, pokemons) {
+  const same_species = pokemons.filter(p => p.evolutionchain.id === currentPokemon.evolutionchain.id)
+  return same_species.findIndex(p => p.id === currentPokemon.id) + 1;
 }
 
 module.exports = resolvers

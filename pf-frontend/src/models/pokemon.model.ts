@@ -1,13 +1,14 @@
 export interface Pokemon {
   id: number;
+  evolutionStage: number;
   name: string;
   height: number;
   weight: number;
   habitat: string;
-  color: string; 
+  color: string;
   sprites: Sprites;
   types: Type[];
-  location_area_encounters?: string
+  location_area_encounters?: string;
 }
 
 export interface Sprites {

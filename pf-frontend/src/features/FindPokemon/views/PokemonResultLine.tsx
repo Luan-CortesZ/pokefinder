@@ -88,27 +88,14 @@ export default function PokemonResultLine({
       <PokemonInfoCard tone={type2Tone}>
         {pokemon.types[1]?.name ?? "-"}
       </PokemonInfoCard>
-      <PokemonInfoCard tone={type2Tone}>
-        {pokemon.types[1]?.name ?? "-"}
-      </PokemonInfoCard>
-      {/* <PokemonInfoCard
-        tone={
-          randomPokemon
-            ? verifyField(
-                pokemon.location_area_encounters,
-                randomPokemon.location_area_encounters,
-              )
-            : "green"
-        }
-      >
-        {pokemon.location_area_encounters}
-      </PokemonInfoCard> */}
       <PokemonInfoCard
-        tone={randomPokemon ? verifyField(pokemon.id, randomPokemon.id) : "green"}
+        tone={randomPokemon ? verifyField(pokemon.color, randomPokemon.color) : "green"}
       >
-        {pokemon.id.toString()}
+        {pokemon.color}
       </PokemonInfoCard>
-      <PokemonInfoCard tone="red">-</PokemonInfoCard> {/* TODO stade évolution, pas encore implémenté  */}
+      <PokemonInfoCard tone="red">
+        {pokemon.evolutionStage.toString()}
+      </PokemonInfoCard>
       <PokemonInfoCard
         tone={
           randomPokemon

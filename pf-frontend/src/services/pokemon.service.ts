@@ -1,6 +1,6 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 import type { Pokemon } from "../models/pokemon.model";
-import { client } from '../app/main';
+import { client } from "../app/main";
 
 interface GetPokemonsResponse {
   getPokemonsByRegion: Pokemon[];
@@ -10,6 +10,7 @@ const GET_POKEMONS_BY_REGION = gql`
   query GetPokemons($gen: Int!) {
     getPokemonsByRegion(generationId: $gen) {
       id
+      evolutionStage
       name
       height
       weight

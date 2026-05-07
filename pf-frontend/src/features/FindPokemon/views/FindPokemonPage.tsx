@@ -5,11 +5,15 @@ import "./styles/FindPokemonPage.scss";
 import type { Pokemon } from "../../../models/pokemon.model";
 import PokemonResultLine from "./PokemonResultLine";
 import PokemonSearch from "../PokemonSearch";
+import { useAuthenticatedUser } from "../../../components/AuthContext/AuthContext";
+import { UserService } from "../../../services/user.service";
 
 type FindPokemonLocationState = {
   regionId?: number;
   regionName?: string;
 };
+
+// 
 
 export default function FindPokemonPage() {
   const location = useLocation();
@@ -21,6 +25,8 @@ export default function FindPokemonPage() {
   const [pokemonSelected, setPokemonSelected] = useState<Pokemon>();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
+  const user = useAuthenticatedUser();
+  
 
   const handlePokemonSelected = (pokemonName: string | null) => {
     const selected = pokemons.find((p) => p.name === pokemonName);
@@ -34,6 +40,9 @@ export default function FindPokemonPage() {
 
     if (selected.name !== randomPokemon?.name) {
       setPokemons((prev) => prev.filter((pokemon) => pokemon.name !== selected.name));
+    }
+    else {
+      UserService.capturePokemon(user._id, selected.id)
     }
   };
 
@@ -71,7 +80,6 @@ export default function FindPokemonPage() {
           <span>Pokemon</span>
           <span>Type 1</span>
           <span>Type 2</span>
-          <span>Habitat</span>
           <span>Couleurs</span>
           <span>Stade evolution</span>
           <span>Hauteur [m]</span>

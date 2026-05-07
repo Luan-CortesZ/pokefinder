@@ -4,6 +4,7 @@ const typeDefs = `#graphql
 
   type Pokemon {
     id: Int
+    evolutionStage: Int
     name: String
     height: Int
     weight: Int
