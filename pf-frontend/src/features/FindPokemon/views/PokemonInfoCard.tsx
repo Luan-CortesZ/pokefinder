@@ -1,6 +1,16 @@
+import type { ReactNode } from "react";
+
 type PokemonInfoCardProps = {
-  children: any;
-  tone?: "green" | "yellow" | "red" | "image";
+  children: ReactNode;
+  tone?:
+    | "green"
+    | "yellow"
+    | "red"
+    | "image"
+    | "higher"
+    | "lower"
+    | "red higher"
+    | "red lower";
   label?: string;
 };
 

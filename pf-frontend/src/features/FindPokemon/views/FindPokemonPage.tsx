@@ -13,11 +13,12 @@ type FindPokemonLocationState = {
   regionName?: string;
 };
 
-// 
+//
 
 export default function FindPokemonPage() {
   const location = useLocation();
-  const locationState = (location.state as FindPokemonLocationState | null) ?? null;
+  const locationState =
+    (location.state as FindPokemonLocationState | null) ?? null;
   const regionId = locationState?.regionId ?? 1;
   const regionName = locationState?.regionName ?? "Kanto";
 
@@ -26,7 +27,6 @@ export default function FindPokemonPage() {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
   const user = useAuthenticatedUser();
-  
 
   const handlePokemonSelected = (pokemonName: string | null) => {
     const selected = pokemons.find((p) => p.name === pokemonName);
@@ -39,17 +39,19 @@ export default function FindPokemonPage() {
     setPokemonSelected(selected);
 
     if (selected.name !== randomPokemon?.name) {
-      setPokemons((prev) => prev.filter((pokemon) => pokemon.name !== selected.name));
-    }
-    else {
-      UserService.capturePokemon(user._id, selected.id)
+      setPokemons((prev) =>
+        prev.filter((pokemon) => pokemon.name !== selected.name),
+      );
+    } else {
+      UserService.capturePokemon(user._id, selected.id);
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const regionPokemons = await PokemonService.getPokemonsByRegion(regionId);
+        const regionPokemons =
+          await PokemonService.getPokemonsByRegion(regionId);
         setPokemons(regionPokemons);
         setPokemonResearched([]);
         setPokemonSelected(undefined);
@@ -87,11 +89,14 @@ export default function FindPokemonPage() {
         </div>
 
         <div className="pokemon-results-list">
-          {pokemonResearched.map((pokemon, index) => (
+          {/* {pokemonResearched.map((pokemon, index) => ( */}
+          {pokemonResearched.map((pokemon) => (
             <PokemonResultLine
-              key={`${pokemon.id}-${index}`}
+              key={pokemon.id}
+              // key={`${pokemon.id}-${index}`}
               pokemon={pokemon}
               randomPokemon={randomPokemon}
+              isNew={pokemon.id === pokemonSelected?.id}
             />
           ))}
         </div>

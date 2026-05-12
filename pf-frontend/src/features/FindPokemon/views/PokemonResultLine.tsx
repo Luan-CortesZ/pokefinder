@@ -4,115 +4,74 @@ import PokemonInfoCard from "./PokemonInfoCard";
 type PokemonResultLineProps = {
   pokemon: Pokemon;
   randomPokemon?: Pokemon;
+  isNew?: boolean;
 };
 
 export default function PokemonResultLine({
   pokemon,
   randomPokemon,
 }: PokemonResultLineProps) {
-  const pokemonTypes = pokemon.types.map((entry) => entry.name);
-  const randomPokemonTypes = randomPokemon?.types.map((entry) => entry.name) ?? [];
+  if (!randomPokemon) return null;
 
-  const verifyField = (
-    searchedValue: string | number,
-    randomValue: string | number,
+  const verifyNumeric = (
+    current: number,
+    target: number,
+  ): "green" | "red higher" | "red lower" => {
+    if (current === target) return "green";
+    return current < target ? "red higher" : "red lower";
+  };
+
+  const verifyType = (
+    current: string | undefined,
+    index: number,
   ): "green" | "yellow" | "red" => {
-    if (searchedValue === randomValue) {
-      return "green";
-    }
-
-    if (
-      typeof searchedValue === "number" &&
-      typeof randomValue === "number"
-    ) {
-      return searchedValue < randomValue ? "yellow" : "red";
-    }
-
+    const targetTypes = randomPokemon.types.map((t) => t.name);
+    const targetAtSlot = targetTypes[index];
+    if (current === targetAtSlot) return "green";
+    if (current && targetTypes.includes(current)) return "yellow";
     return "red";
   };
-
-  const verifyExactField = (
-    searchedValue: string | number,
-    randomValue: string | number,
-  ): "green" | "red" => {
-    return searchedValue === randomValue ? "green" : "red";
-  };
-
-  const verifyTypeSlot = (
-    searchedType: string | undefined,
-    targetTypeAtSameSlot: string | undefined,
-    targetTypes: string[],
-  ): "green" | "yellow" | "red" => {
-    if (!searchedType) {
-      return !targetTypeAtSameSlot ? "green" : "red";
-    }
-
-    if (searchedType === targetTypeAtSameSlot) {
-      return "green";
-    }
-
-    if (targetTypes.includes(searchedType)) {
-      return "yellow";
-    }
-
-    return "red";
-  };
-
-  const type1Tone = randomPokemon
-    ? verifyTypeSlot(
-        pokemonTypes[0],
-        randomPokemonTypes[0],
-        randomPokemonTypes,
-      )
-    : "green";
-  const type2Tone = randomPokemon
-    ? verifyTypeSlot(
-        pokemonTypes[1],
-        randomPokemonTypes[1],
-        randomPokemonTypes,
-      )
-    : "green";
 
   return (
-    <div className="pokemon-result-line">
+    // AJOUT de "new-guess" pour l'animation unique
+    <div className="pokemon-result-line new-guess">
       <PokemonInfoCard tone="image" label={pokemon.name}>
-        <img
-          className="pokebox-img"
-          src={pokemon.sprites.front_default}
-          alt={pokemon.name}
-        />
+        <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       </PokemonInfoCard>
-      <PokemonInfoCard tone={type1Tone}>
-        {pokemon.types[0].name}
+
+      <PokemonInfoCard tone={verifyType(pokemon.types[0]?.name, 0)}>
+        {pokemon.types[0]?.name}
       </PokemonInfoCard>
-      <PokemonInfoCard tone={type2Tone}>
+
+      <PokemonInfoCard tone={verifyType(pokemon.types[1]?.name, 1)}>
         {pokemon.types[1]?.name ?? "-"}
       </PokemonInfoCard>
+
       <PokemonInfoCard
-        tone={randomPokemon ? verifyField(pokemon.color, randomPokemon.color) : "green"}
+        tone={pokemon.color === randomPokemon.color ? "green" : "red"}
       >
         {pokemon.color}
       </PokemonInfoCard>
-      <PokemonInfoCard tone="red">
-        {pokemon.evolutionStage.toString()}
-      </PokemonInfoCard>
+
       <PokemonInfoCard
-        tone={
-          randomPokemon
-            ? verifyExactField(pokemon.height, randomPokemon.height)
-            : "green"
-        }
+        tone={verifyNumeric(
+          pokemon.evolutionStage,
+          randomPokemon.evolutionStage,
+        )}
       >
-        {pokemon.height.toString()}
+        {pokemon.evolutionStage}
       </PokemonInfoCard>
+
       <PokemonInfoCard
-        tone={
-          randomPokemon
-            ? verifyExactField(pokemon.weight, randomPokemon.weight)
-            : "green"
-        }
+        tone={verifyNumeric(pokemon.height, randomPokemon.height)}
       >
-        {pokemon.weight.toString()}
+        {pokemon.height / 10}m
+      </PokemonInfoCard>
+
+      <PokemonInfoCard
+        tone={verifyNumeric(pokemon.weight, randomPokemon.weight)}
+      >
+        {pokemon.weight / 10}kg
       </PokemonInfoCard>
     </div>
   );

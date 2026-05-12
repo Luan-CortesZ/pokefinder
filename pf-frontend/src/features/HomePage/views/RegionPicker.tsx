@@ -5,7 +5,6 @@ import "./styles/RegionPicker.scss";
 import arrowUp from "../../../assets/images/fleche-vers-le-haut.png";
 import arrowDown from "../../../assets/images/fleche-vers-le-bas.png";
 
-
 const REGIONS = [
   "Kanto",
   "Johto",
@@ -159,7 +158,7 @@ export default function RegionPicker() {
                 })
               }
               type="button"
-            >n b
+            >
               Find pokemon
             </button>
             <button type="button">Find TCG Card</button>
@@ -174,7 +173,7 @@ export default function RegionPicker() {
         disabled={isAnimating}
         onClick={handleNextClick}
         type="button"
-      >        
+      >
         <img src={arrowDown} />
       </button>
     </div>
