@@ -56,3 +56,18 @@ exports.register = async (req, res) => {
     res.status(500).json({ message: "Erreur serveur" });
   }
 };
+
+exports.logout = async (req, res) => {
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: false, //only in prod with HTTPS
+      sameSite: 'strict'
+    });
+    
+    return res.status(200).json({ message: "Déconnexion réussie" });
+  } catch (err) {
+    console.error("Erreur lors du logout:", err);
+    return res.status(500).json({ message: "Erreur serveur lors de la déconnexion" });
+  }
+};

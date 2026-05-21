@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, type FC, type ReactNode } from 'react';
 import type { User } from '../../models/user.model';
+import { AuthService } from '../../services/auth.service';
 
 interface AuthContextType {
   user: User | null;
@@ -27,9 +28,15 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.setItem('poke_user', JSON.stringify(userData));
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('poke_user');
+  const logout = async () => {
+    try {
+      await AuthService.logout();
+    } catch (err) {
+      console.error("Impossible de réinitialiser le cookie serveur:", err);
+    } finally {
+      setUser(null);
+      localStorage.removeItem('poke_user');
+    }
   };
 
   return (

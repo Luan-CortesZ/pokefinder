@@ -15,3 +15,11 @@ exports.login = async (req, res, next) => {
         next(error);
     }
 };
+
+exports.logout = async (req, res, next) => {
+    try {
+        await authService.logout(req, res);
+    } catch (error) {
+        next(error);
+    }
+};

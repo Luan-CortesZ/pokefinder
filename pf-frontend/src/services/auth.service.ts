@@ -44,4 +44,21 @@ export const AuthService = {
             throw error;
         }
     },
+    logout: async (): Promise<any> => {
+        try {
+            const response = await fetch(`${API_URL}/logout`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                credentials: 'include'
+            });
+
+            if (!response.ok) {
+                throw new Error('Erreur lors de la déconnexion');
+            }
+            return await response.json();
+        } catch (error) {
+            console.error("Erreur service logout:", error);
+            throw error;
+        }
+    },
 };
