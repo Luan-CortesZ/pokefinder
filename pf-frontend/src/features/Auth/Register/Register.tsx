@@ -4,7 +4,8 @@ import type { User } from '../../../models/user.model';
 import { useForm } from 'react-hook-form';
 import './styles/Register.scss';
 import { Button, TextField } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../components/AuthContext/AuthContext';
 
 type RegisterFormValues = Pick<User, 'name' | 'email' | 'password'> & {
   confirmPassword: string;
@@ -22,7 +23,9 @@ export default function Register() {
     formState: { errors },
     reset,
   } = useForm<RegisterFormValues>();
-
+  const { login } = useAuth();
+  const navigate = useNavigate();
+ 
   const passwordValue = watch('password');
 
   const onSubmit = async (data: RegisterFormValues) => {
@@ -35,8 +38,11 @@ export default function Register() {
 
     try {
       const user = await AuthService.register(registerPayload);
-      console.log('Inscription reussie pour :', user.username);
+      console.log('Inscription reussie pour :', user.name);
       setIsSuccess(true);
+      const response = await AuthService.login({ email: registerPayload.email, password: registerPayload.password });
+      login(response.user);
+      navigate('/profile'); 
       reset();
     } catch (err: any) {
       setHasError(true);

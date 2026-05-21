@@ -24,7 +24,7 @@ export const AuthService = {
             throw error;
         }
     },
-    register: async (userData: RegisterPayload): Promise<any> => {
+    register: async (userData: RegisterPayload): Promise<User> => {
         try {
             const response = await fetch(`${API_URL}/register`, {
                 method: 'POST',

@@ -38,7 +38,7 @@ export default function Header() {
                                     <Link to="/" role="menuitem">Home</Link>
                                     <Link to="/profile" role="menuitem">Profile</Link>
                                     <Link to="/profile/pokédex" role="menuitem">Pokédex</Link>
-                                    <Link to="/logout" role="menuitem" onClick={logout}>
+                                    <Link to="/login" role="menuitem" onClick={logout}>
                                         Déconnexion
                                     </Link>
                                 </div>
