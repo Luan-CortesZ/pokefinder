@@ -5,30 +5,51 @@ import FindPokemonPage from "../features/FindPokemon/views/FindPokemonPage";
 import Login from "../features/Auth/Login/Login";
 import Register from "../features/Auth/Register/Register";
 import { ProtectedRoute } from "../components/ProtectedRoutes/ProtectedRoute";
+import PokemonSilhouette from "../features/FindSilhouette/views/PokemonSilhouette";
 
 export const routers = [
-    {
-      path: "/",
-      component: <HomePage/>, 
-    },
-    {
-      path: "/login",
-      component: <Login/>,
-    },
-    {
-      path: "/register",
-      component: <Register/>,
-    },
-    {
-      path: "/profile",
-      component: <ProtectedRoute><Profile/></ProtectedRoute>,
-    },
-    {
-      path: "/profile/pokédex",
-      component: <ProtectedRoute><Pokedex/></ProtectedRoute>,
-    },
-    {
-      path: "/find-pokemon",
-      component: <FindPokemonPage/>,
-    },
-  ];
+  {
+    path: "/",
+    component: <HomePage />,
+  },
+  {
+    path: "/login",
+    component: <Login />,
+  },
+  {
+    path: "/register",
+    component: <Register />,
+  },
+  {
+    path: "/profile",
+    component: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/profile/pokédex",
+    component: (
+      <ProtectedRoute>
+        <Pokedex />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/find-pokemon",
+    component: (
+      <ProtectedRoute>
+        <FindPokemonPage />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/find-silhouette",
+    component: (
+      <ProtectedRoute>
+        <PokemonSilhouette />
+      </ProtectedRoute>
+    ),
+  },
+];

@@ -1,0 +1,70 @@
+.find-silhouette-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+.silhouette-container {
+  width: 250px;
+  height: 250px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #c8e6ff, #ffffff);
+  border: 3px solid #aad4f5;
+  border-radius: 8px;
+}
+
+.silhouette-container img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  transition: filter 0.5s ease;
+}
+
+.pokemon-results-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.defaultFontSilhouette {
+  filter: brightness(0);
+}
+
+.silhouette-result-line {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.silhouette-result-line img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.silhouette-sprite-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform-origin: bottom right;
+  transition: transform 0.5s ease;
+}
+
+.silhouette-container img {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  transition: filter 0.5s ease;
+}

@@ -161,8 +161,19 @@ export default function RegionPicker() {
             >
               Find pokemon
             </button>
+            <button
+              onClick={() =>
+                navigate("/find-silhouette", {
+                  state: {
+                    regionName: openRegion,
+                    regionId: REGION_IDS[openRegion] ?? "1",
+                  },
+                })
+              }
+            >
+              Guess Silhouette
+            </button>
             <button type="button">Find TCG Card</button>
-            <button type="button">Silhouette</button>
             <button type="button">Pokeflaire</button>
           </div>
         )}
