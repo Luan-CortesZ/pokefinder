@@ -6,7 +6,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res, next) => {
-  passport.authenticate('local', (err, user, info) => {
+  passport.authenticate('local', { session: false }, (err, user, info) => {
     if (err) { 
       return res.status(500).json({ message: "Erreur serveur" }); 
     }
@@ -16,7 +16,7 @@ exports.login = async (req, res, next) => {
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      { id: user._id, email: user.email, name: user.name },
       process.env.SESSION_SECRET,
       { expiresIn: '1d' }
     );
@@ -51,7 +51,7 @@ exports.register = async (req, res) => {
       password: await bcrypt.hash(req.body.password, 10)
     });
     console.log("Utilisateur créé:", user);
-    res.status(201).json({ message: "Utilisateur créé", user: { id: user._id, name: user.name, email: user.email } });
+    res.status(201).json({ message: "Utilisateur créé", user: { id: user.insertedId, name: req.body.name, email: req.body.email } });
   }catch (err) {
     res.status(500).json({ message: "Erreur serveur" });
   }
