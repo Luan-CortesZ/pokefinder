@@ -96,6 +96,41 @@ const resolvers = {
         console.error("Erreur GraphQL/PokeAPI:", error);
         throw new Error("Erreur lors de la récupération des Pokémons");
       }
+    },
+    getPokemonCount: async () => {
+      const cacheKey = `pokemonCount`;
+      const cachedData = myCache.get(cacheKey);
+      if (cachedData) {
+        console.log("Données de comptage servies depuis le cache");
+        return cachedData;
+      }
+      const query = `
+        query getPokemonCount {
+          pokemon_aggregate {
+            aggregate{
+              count
+            }
+          }
+        }
+      `;
+      try{
+        const response = await fetch(POKEAPI_GRAPHQL_URL, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            query
+          })
+        });
+
+        const json = await response.json();
+        myCache.set(cacheKey, json.data.pokemon_aggregate.aggregate.count);
+        console.log("Nouvelles données mises en cache");
+        
+        return json.data.pokemon_aggregate.aggregate.count;
+      }catch{
+        console.error("Erreur GraphQL/PokeAPI:", error);
+        throw new Error("Erreur lors de la récupération des Pokémons");
+      }
     }
   }
 }

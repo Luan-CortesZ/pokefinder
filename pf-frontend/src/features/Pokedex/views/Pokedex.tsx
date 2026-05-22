@@ -20,7 +20,7 @@ export default function Pokedex() {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await UserService.getUsersPokemon(user._id);
+        const data = await UserService.getUsersPokemon(user.id);
         setUserPokemons(Array.isArray(data) ? data : []);
       } catch (err) {
         console.error("Erreur lors du chargement", err);
@@ -29,7 +29,7 @@ export default function Pokedex() {
       }
     };
     fetchData();
-  }, [user._id])
+  }, [user.id])
 
   useEffect(() => {
       const fetchData = async () => {

@@ -16,6 +16,7 @@ const typeDefs = `#graphql
 
   type Query {
     getPokemonsByRegion(generationId: Int!): [Pokemon]
+    getPokemonCount: Int
   }
 `;
 module.exports = typeDefs;

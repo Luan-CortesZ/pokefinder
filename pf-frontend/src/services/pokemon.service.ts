@@ -28,6 +28,12 @@ const GET_POKEMONS_BY_REGION = gql`
   }
 `;
 
+const GET_POKEMON_COUNT = gql`
+  query GetPokemonCount {
+    getPokemonCount
+  }
+`;
+
 export const PokemonService = {
   getPokemonsByRegion: async (generationId: number): Promise<Pokemon[]> => {
     try {
@@ -42,10 +48,24 @@ export const PokemonService = {
       throw error;
     }
   },
-
   getRandomPokemon: async (generationId: number): Promise<Pokemon> => {
     const pokemons = await PokemonService.getPokemonsByRegion(generationId);
     const randomIndex = Math.floor(Math.random() * pokemons.length);
     return pokemons[randomIndex];
   },
+  getPokemonCount: async (): Promise<number> => {
+    const query = GET_POKEMON_COUNT;
+    try {
+      const {data} = await client.query<{ getPokemonCount: number }>({
+        query,
+      });
+
+      if (!data || !data.getPokemonCount) return 0;
+
+      return data.getPokemonCount;
+    } catch (error) {
+      console.error("Erreur service GraphQL:", error);
+      throw error;
+    }
+  }
 };
