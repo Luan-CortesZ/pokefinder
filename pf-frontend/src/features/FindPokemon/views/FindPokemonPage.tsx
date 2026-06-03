@@ -43,7 +43,7 @@ export default function FindPokemonPage() {
         prev.filter((pokemon) => pokemon.name !== selected.name),
       );
     } else {
-      UserService.capturePokemon(user.id, selected.id);
+      UserService.capturePokemon(user.id, selected.id, selected.name);
     }
   };
 

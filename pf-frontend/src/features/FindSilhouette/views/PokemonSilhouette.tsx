@@ -53,7 +53,7 @@ export default function PokemonSilhouette() {
     }
     // S'il a trouvé on appelle la fonction "capturePokemon"
     else {
-      UserService.capturePokemon(user.id, selected.id);
+      UserService.capturePokemon(user.id, selected.id, selected.name);
       setIsFound(true);
     }
   };

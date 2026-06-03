@@ -20,7 +20,9 @@ exports.capturePokemon = async (req, res, next) => {
         $set: {
           level: Math.floor(1 + (Math.random() * (LEVEL_MAX-1))),
           isShiny: Math.floor(1 + (Math.random() * (SHINY-1))) == SHINY,
-          capturedAt: new Date()
+          capturedAt: new Date(),
+          name: req.body.pokemonName
+
         }
       },
       { 

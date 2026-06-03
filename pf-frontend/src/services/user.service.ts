@@ -1,12 +1,12 @@
 const API_URL = 'http://localhost:3000/api/user'; 
 
 export const UserService = {
-    capturePokemon: async (userId: string, pokemonId: number): Promise<any> => {
+    capturePokemon: async (userId: string, pokemonId: number, pokemonName: string): Promise<any> => {
         try {
             const response = await fetch(`${API_URL}/capture-pokemon`, {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({userId, pokemonId}),
+                body: JSON.stringify({userId, pokemonId, pokemonName}),
                 credentials: 'include'
             });
 
