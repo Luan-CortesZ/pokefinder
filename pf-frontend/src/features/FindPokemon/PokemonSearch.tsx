@@ -1,4 +1,4 @@
-import { Autocomplete, TextField } from '@mui/material';
+import { Autocomplete, TextField, Box } from '@mui/material';
 import type { Pokemon } from '../../models/pokemon.model';
 import * as React from 'react';
 
@@ -11,17 +11,12 @@ interface PokemonSearchProps {
 
 
 export default function PokemonSearch(props: PokemonSearchProps) {
-  const { pokemons, onPokemonSelected, targetPokemonName } = props;
+  const { pokemons, onPokemonSelected } = props;
   const [value, setValue] = React.useState<string | null>(null);
   const [inputValue, setInputValue] = React.useState('');
 
   return (
-    <div>
-      <div>{`value: ${value !== null ? `'${value}'` : 'null'}`}</div>
-      <div>{`inputValue: '${inputValue}'`}</div>
-      <div>{`pokemon à trouver: '${targetPokemonName ?? ""}'`}</div>
-      <br />
-      
+    <Box sx={{ display: 'flex', justifyContent: 'center', width: '100%', my: 3 }}>
       <Autocomplete
         value={value}
         onChange={(event: any, newValue: string | null) => {
@@ -32,12 +27,23 @@ export default function PokemonSearch(props: PokemonSearchProps) {
         onInputChange={(event, newInputValue) => {
           setInputValue(newInputValue);
         }}
-        id="controllable-states-demo"
+        id="pokemon-search-autocomplete"
         options={pokemons.map((pokemon) => pokemon.name)}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Pokemon" />}
+        sx={{ 
+          width: '100%', 
+          maxWidth: 400,
+          bgcolor: 'background.paper',
+          borderRadius: 2,
+          boxShadow: 3,
+          '& .MuiOutlinedInput-root': {
+            borderRadius: 2,
+          }
+        }}
+        renderInput={(params) => (
+          <TextField {...params} label="Rechercher un Pokémon..." variant="outlined" />
+        )}
       />
-    </div>
+    </Box>
   );
 
 }
