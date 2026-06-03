@@ -1,12 +1,49 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 1rem;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
 }
 
 h2 {
   align-self: center; 
+}
+
+.welcome-message{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: auto;
+}
+
+.guest-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.guest-action-btn {
+  text-decoration: none;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: 1000px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+
+  &:hover,
+  &:focus-visible {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.18);
+    outline: none;
+  }
 }
 
 .pokedex-container {

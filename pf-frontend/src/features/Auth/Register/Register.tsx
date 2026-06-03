@@ -56,27 +56,25 @@ export default function Register() {
     <div className="register-page">
       <div className="register-info">
         <h1>Pokefinder</h1>
-        <p>Build your trainer account and start your journey.</p>
       </div>
 
       <div className="register-card">
-        <h2>Create account</h2>
-        <p className="subtitle">Join the community in less than a minute.</p>
+        <h2>Créer un compte</h2>
+        <p className="subtitle"></p>
 
-        {isSuccess && <div className="feedback success">Account created successfully.</div>}
+        {isSuccess && <div className="feedback success">Compte créé avec succès.</div>}
         {hasError && <div className="feedback error">{errorMessage}</div>}
 
         <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
           <div className="field">
-            <label htmlFor="name">Username</label>
+            <label htmlFor="name">Nom d'utilisateur</label>
             <TextField
               id="name"
               type="text"
               {...register('name', {
-                required: 'Username is required',
-                minLength: { value: 3, message: 'At least 3 characters' },
+                required: 'Nom d\'utilisateur est requis',
+                minLength: { value: 3, message: 'Au moins 3 caractères' },
               })}
-              placeholder="Ash Ketchum"
               variant="outlined"
               fullWidth
               error={!!errors.name}
@@ -90,13 +88,12 @@ export default function Register() {
               id="email"
               type="email"
               {...register('email', {
-                required: 'Email is required',
+                required: 'Email est requis',
                 pattern: {
                   value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                  message: 'Please enter a valid email',
+                  message: 'Veuillez entrer un email valide',
                 },
               })}
-              placeholder="trainer@pokefinder.com"
               variant="outlined"
               fullWidth
               error={!!errors.email}
@@ -105,15 +102,14 @@ export default function Register() {
           </div>
 
           <div className="field">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Mot de passe</label>
             <TextField
               id="password"
               type="password"
               {...register('password', {
-                required: 'Password is required',
-                minLength: { value: 6, message: 'At least 6 characters' },
+                required: 'Mot de passe est requis',
+                minLength: { value: 6, message: 'Au moins 6 caractères' },
               })}
-              placeholder="Enter a secure password"
               variant="outlined"
               fullWidth
               error={!!errors.password}
@@ -122,16 +118,15 @@ export default function Register() {
           </div>
 
           <div className="field">
-            <label htmlFor="confirmPassword">Confirm password</label>
+            <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
             <TextField
               id="confirmPassword"
               type="password"
               {...register('confirmPassword', {
-                required: 'Please confirm your password',
+                required: 'Veuillez confirmer votre mot de passe',
                 validate: (value) =>
-                  value === passwordValue || 'Passwords do not match',
+                  value === passwordValue || 'Les mots de passe ne correspondent pas',
               })}
-              placeholder="Repeat your password"
               variant="outlined"
               fullWidth
               error={!!errors.confirmPassword}
@@ -146,7 +141,7 @@ export default function Register() {
             disabled={isSubmitting}
             fullWidth
           >
-            {isSubmitting ? 'Creating account...' : 'Register'}
+            {isSubmitting ? 'Création du compte...' : 'S\'inscrire'}
           </Button>
         </form>
 
