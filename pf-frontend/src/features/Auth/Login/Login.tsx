@@ -27,7 +27,6 @@ export default function Login() {
     try {
       const response = await AuthService.login(data);
       login(response.user);
-      console.log('Connexion reussie pour :', response.user.name);
       navigate('/profile/pokédex');
     } catch (err: any) {
       setHasError(true);

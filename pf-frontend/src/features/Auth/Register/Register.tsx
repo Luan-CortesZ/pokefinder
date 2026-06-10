@@ -38,7 +38,6 @@ export default function Register() {
 
     try {
       const user = await AuthService.register(registerPayload);
-      console.log('Inscription reussie pour :', user.name);
       setIsSuccess(true);
       const response = await AuthService.login({ email: registerPayload.email, password: registerPayload.password });
       login(response.user);
