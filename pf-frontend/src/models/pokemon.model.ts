@@ -23,7 +23,10 @@ export interface Type {
 }
 
 export interface CapturedPokemon {
-  isShiny: boolean;
-  level: number;
+  id: string;
   pokemonId: number;
+  name: string;
+  level: number;
+  isShiny: boolean;
+  capturedAt: string;
 }

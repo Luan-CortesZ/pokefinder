@@ -15,7 +15,7 @@ export default function PokeBox(props: PokeBoxProps) {
   const {user} = useAuth();
   const formattedId = `#${pokemon.id.toString().padStart(3, "0")}`;
   async function capturePokemon(){
-    if(user) await UserService.capturePokemon(user.id, pokemon.id, pokemon.name )
+    if(user) await UserService.capturePokemon(pokemon.id, pokemon.name )
   }
 
   return (

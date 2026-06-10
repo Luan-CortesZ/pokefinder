@@ -1,10 +1,35 @@
 const NodeCache = require("node-cache");
 const myCache = new NodeCache({ stdTTL: 86400 }); // Cache gardé 24h
-
+const { capturePokemon, getUsersPokemon } = require('../services/user.service');
 const POKEAPI_GRAPHQL_URL = "https://graphql.pokeapi.co/v1beta2";
 
 const resolvers = {
+  Mutation: {
+    capturePokemon: async (_, { pokemonId, pokemonName }, context) => {
+      if (!context.user) {
+        throw new Error("Non autorisé ! Vous devez être connecté pour capturer un Pokémon.");
+      }
+
+      try {
+        const newCapture = await capturePokemon(context.user._id, pokemonId, pokemonName);
+        return newCapture;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    }
+  },
   Query: {
+    getMyPokedex: async (_, __, context) => {
+      if (!context.user) {
+        throw new Error("Non autorisé ! Vous devez être connecté pour voir votre Pokédex.");
+      }
+
+      try {
+        return await getUsersPokemon(context.user._id);
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
     getPokemonsByRegion: async (_, {generationId}) => {
       const cacheKey = `region-${generationId}`;
       const cachedData = myCache.get(cacheKey);
@@ -92,7 +117,7 @@ const resolvers = {
         console.log("Nouvelles données mises en cache");
         
         return mappedData;
-      }catch{
+      } catch (error) {
         console.error("Erreur GraphQL/PokeAPI:", error);
         throw new Error("Erreur lors de la récupération des Pokémons");
       }
@@ -127,7 +152,7 @@ const resolvers = {
         console.log("Nouvelles données mises en cache");
         
         return json.data.pokemon_aggregate.aggregate.count;
-      }catch{
+      } catch (error) {
         console.error("Erreur GraphQL/PokeAPI:", error);
         throw new Error("Erreur lors de la récupération des Pokémons");
       }

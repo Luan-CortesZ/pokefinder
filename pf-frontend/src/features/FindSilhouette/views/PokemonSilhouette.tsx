@@ -33,7 +33,7 @@ export default function PokemonSilhouette() {
 
   const [isFound, setIsFound] = useState<boolean>(false);
 
-  const handlePokemonSelected = (pokemonName: string | null) => {
+  const handlePokemonSelected = async (pokemonName: string | null) => {
     // Va vérifier si le joueur a sélectionner un pokemon et retourner l'objet pokemon
     const selected = pokemons.find((p) => p.name === pokemonName);
     // Si aucune n'est choisi => return ide
@@ -53,7 +53,7 @@ export default function PokemonSilhouette() {
     }
     // S'il a trouvé on appelle la fonction "capturePokemon"
     else {
-      UserService.capturePokemon(user.id, selected.id, selected.name);
+      if (user) await UserService.capturePokemon(selected.id, selected.name);
       setIsFound(true);
     }
   };

@@ -14,9 +14,25 @@ const typeDefs = `#graphql
     color: String
   }
 
+  type CapturedPokemon {
+    id: ID
+    userId: String
+    pokemonId: Int
+    name: String
+    level: Int
+    isShiny: Boolean
+    capturedAt: String
+  }
+
   type Query {
     getPokemonsByRegion(generationId: Int!): [Pokemon]
     getPokemonCount: Int
+    getMyPokedex: [CapturedPokemon]
+  }
+
+  type Mutation {
+    capturePokemon(pokemonId: Int!, pokemonName: String!): CapturedPokemon
   }
 `;
+
 module.exports = typeDefs;

@@ -13,8 +13,6 @@ type FindPokemonLocationState = {
   regionName?: string;
 };
 
-//
-
 export default function FindPokemonPage() {
   const location = useLocation();
   const locationState =
@@ -28,7 +26,7 @@ export default function FindPokemonPage() {
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
   const user = useAuthenticatedUser();
 
-  const handlePokemonSelected = (pokemonName: string | null) => {
+  const handlePokemonSelected = async (pokemonName: string | null) => {
     const selected = pokemons.find((p) => p.name === pokemonName);
 
     if (!selected) {
@@ -43,7 +41,7 @@ export default function FindPokemonPage() {
         prev.filter((pokemon) => pokemon.name !== selected.name),
       );
     } else {
-      UserService.capturePokemon(user.id, selected.id, selected.name);
+      if (user) await UserService.capturePokemon(selected.id, selected.name);
     }
   };
 
