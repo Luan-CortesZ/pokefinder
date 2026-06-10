@@ -8,6 +8,7 @@ import { useAuthenticatedUser } from "../../../components/AuthContext/AuthContex
 import { UserService } from "../../../services/user.service";
 import SilhouetteResultLine from "./SilhouetteResultLine";
 import SilhouetteCard from "./SilhouetteCard";
+import VictoryModal from "../../FindPokemon/views/VictoryModal";
 
 type FindPokemonLocationState = {
   regionId?: number;
@@ -81,6 +82,15 @@ export default function PokemonSilhouette() {
   if (!randomPokemon) return null;
   return (
     <section className="find-silhouette-page">
+      {isFound && (
+        <VictoryModal
+          pokemon={randomPokemon}
+          regionName={regionName}
+          regionId={regionId}
+          nextGamePath="/find-pokemon"
+          nextGameLabel="Find Pokemon"
+        />
+      )}
       <h1>Find Silhouette</h1>
       <h2>{regionName}</h2>
 

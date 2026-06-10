@@ -7,6 +7,7 @@ import PokemonResultLine from "./PokemonResultLine";
 import PokemonSearch from "../PokemonSearch";
 import { useAuthenticatedUser } from "../../../components/AuthContext/AuthContext";
 import { UserService } from "../../../services/user.service";
+import VictoryModal from "./VictoryModal";
 
 type FindPokemonLocationState = {
   regionId?: number;
@@ -26,6 +27,7 @@ export default function FindPokemonPage() {
   const [pokemonSelected, setPokemonSelected] = useState<Pokemon>();
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [pokemonResearched, setPokemonResearched] = useState<Pokemon[]>([]);
+  const [isWon, setIsWon] = useState(false);
   const user = useAuthenticatedUser();
 
   const handlePokemonSelected = (pokemonName: string | null) => {
@@ -44,6 +46,7 @@ export default function FindPokemonPage() {
       );
     } else {
       UserService.capturePokemon(user.id, selected.id, selected.name);
+      setIsWon(true);
     }
   };
 
@@ -55,6 +58,7 @@ export default function FindPokemonPage() {
         setPokemons(regionPokemons);
         setPokemonResearched([]);
         setPokemonSelected(undefined);
+        setIsWon(false);
 
         const randomIndex = Math.floor(Math.random() * regionPokemons.length);
         setRandomPokemon(regionPokemons[randomIndex]);
@@ -68,6 +72,15 @@ export default function FindPokemonPage() {
 
   return (
     <section className="find-pokemon-page">
+      {isWon && randomPokemon && (
+        <VictoryModal
+          pokemon={randomPokemon}
+          regionName={regionName}
+          regionId={regionId}
+          nextGamePath="/find-silhouette"
+          nextGameLabel="Find Silhouette"
+        />
+      )}
       <h1>Find Pokemon</h1>
       <h2>{regionName}</h2>
 
