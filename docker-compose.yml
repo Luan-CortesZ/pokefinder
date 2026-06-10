@@ -20,7 +20,7 @@ services:
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
       - SESSION_SECRET=${SESSION_SECRET}
-      - MONGODB_URI=mongodb://${DB_USER}:${DB_PASSWORD}@mongodb:27017/pokefinder?authSource=admin
+      - MONGODB_URI=${MONGODB_URI}
     ports:
       - "3000:3000"
     depends_on:
@@ -35,7 +35,7 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:3000/api
+      - VITE_API_URL=${VITE_API_URL}
     depends_on:
       - backend
 
