@@ -88,18 +88,14 @@ export default function FindPokemonPage() {
           <span>Poids [kg]</span>
         </div>
 
-        <div className="pokemon-results-list">
-          {/* {pokemonResearched.map((pokemon, index) => ( */}
-          {pokemonResearched.map((pokemon) => (
-            <PokemonResultLine
-              key={pokemon.id}
-              // key={`${pokemon.id}-${index}`}
-              pokemon={pokemon}
-              randomPokemon={randomPokemon}
-              isNew={pokemon.id === pokemonSelected?.id}
-            />
-          ))}
-        </div>
+        {pokemonResearched.map((pokemon) => (
+          <PokemonResultLine
+            key={pokemon.id}
+            pokemon={pokemon}
+            randomPokemon={randomPokemon}
+            isNew={pokemon.id === pokemonSelected?.id}
+          />
+        ))}
       </div>
     </section>
   );

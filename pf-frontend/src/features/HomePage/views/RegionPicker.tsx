@@ -15,7 +15,6 @@ const REGIONS = [
   "Alola",
   "Galar",
   "Paldea",
-  "Toutes",
 ];
 
 const REGION_IDS: Record<string, number> = {
@@ -173,8 +172,6 @@ export default function RegionPicker() {
             >
               Guess Silhouette
             </button>
-            <button type="button">Find TCG Card</button>
-            <button type="button">Pokeflaire</button>
           </div>
         )}
       </div>
