@@ -149,15 +149,19 @@ export default function Pokedex() {
         backgroundRepeat: 'repeat',
         p: 3 
       }}>
-        <PokePanel value={region} index={region}>
-          {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
-            <PokeBox 
-              key={pokemon.id} 
-              pokemon={pokemon} 
-              captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)} 
-            />
-          ))}
-        </PokePanel>
+        {loading ? (
+          <div>Chargement...</div>
+        ) : (
+          <PokePanel value={region} index={region}>
+              {pokemons.slice((page - 1) * itemsPerPage, page * itemsPerPage).map((pokemon) => (
+                <PokeBox 
+                  key={pokemon.id} 
+                  pokemon={pokemon} 
+                  captured={userPokemons?.find((p) => p.pokemonId === pokemon.id)} 
+              />
+            ))}
+          </PokePanel>
+        )}
       </Box>
     </Box>
   )

@@ -146,7 +146,7 @@ export default function Register() {
         </form>
 
         <p className="login-link">
-          Already have an account? <Link to="/login">Sign in</Link>
+          Déjà inscrit ? <Link to="/login">Se connecter</Link>
         </p>
       </div>
     </div>

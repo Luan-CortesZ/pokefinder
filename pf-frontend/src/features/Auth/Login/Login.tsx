@@ -41,13 +41,11 @@ export default function Login() {
     <div className="login-page">
       <div className="login-info">
         <h1>Pokefinder</h1>
-        <p>Welcome back trainer. Continue your journey.</p>
       </div>
 
       <div className="login-card">
-        <h2>Sign in</h2>
-        <p className="subtitle">Access your account and jump into your Pokedex.</p>
-
+        <h2>Se connecter</h2>
+        <p className="subtitle"></p>
         {hasError && <div className="feedback error">{errorMessage}</div>}
 
         <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
@@ -63,7 +61,6 @@ export default function Login() {
                   message: 'Please enter a valid email',
                 },
               })}
-              placeholder="trainer@pokefinder.com"
               variant="outlined"
               fullWidth
               error={!!errors.email}
@@ -72,7 +69,7 @@ export default function Login() {
           </div>
 
           <div className="field">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Mot de passe</label>
             <TextField
               id="password"
               type="password"
@@ -80,7 +77,6 @@ export default function Login() {
                 required: 'Password is required',
                 minLength: { value: 6, message: 'At least 6 characters' },
               })}
-              placeholder="Enter your password"
               variant="outlined"
               fullWidth
               error={!!errors.password}
@@ -95,12 +91,12 @@ export default function Login() {
             disabled={isSubmitting}
             fullWidth
           >
-            {isSubmitting ? 'Signing in...' : 'Login'}
+            {isSubmitting ? 'Connexion...' : 'Se connecter'}
           </Button>
         </form>
 
         <p className="register-link">
-          New trainer? <Link to="/register">Create account</Link>
+          Nouveau ? <Link to="/register">Créer un compte</Link>
         </p>
       </div>
     </div>
