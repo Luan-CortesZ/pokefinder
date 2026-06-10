@@ -1,18 +1,15 @@
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcryptjs');
-const { ObjectId } = require('mongodb');
-const { client } = require('./database');
+const User = require('../models/user.model');
 
 module.exports = function(passport) {
-  passport.use( new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+  passport.use(
+    new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
       try {
-        const db = client.db("pokefinder");
-        const collection = db.collection("users");
-
-        const user = await collection.findOne({ email: email });
+        const user = await User.findOne({ email: email });
 
         if (!user) {
-          return done(null, false, { message: 'Cet email n\'est pas enregistré.' });
+          return done(null, false, { message: "Cet email n'est pas enregistré." });
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
@@ -34,8 +31,7 @@ module.exports = function(passport) {
 
   passport.deserializeUser(async (id, done) => {
     try {
-      const db = client.db("pokefinder");
-      const user = await db.collection("users").findOne({ _id: new ObjectId(id) });
+      const user = await User.findById(id);
       done(null, user);
     } catch (err) {
       done(err, null);

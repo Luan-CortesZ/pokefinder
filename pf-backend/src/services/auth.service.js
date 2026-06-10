@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { client } = require('../config/database');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user.model'); 
 
 exports.login = async (req, res, next) => {
   passport.authenticate('local', { session: false }, (err, user, info) => {
@@ -12,7 +12,7 @@ exports.login = async (req, res, next) => {
     }
     
     if (!user) {
-      return res.status(401).json({ message: "Identifiants invalides"  });
+      return res.status(401).json({ message: "Identifiants invalides" });
     }
 
     const token = jwt.sign(
@@ -39,20 +39,35 @@ exports.login = async (req, res, next) => {
 
 exports.register = async (req, res) => {
   try {
-    const db = client.db("pokefinder");
-    const users = db.collection("users");
-    const existingUser = await users.findOne({ email: req.body.email });
+    const { name, email, password } = req.body;
+
+    const existingUser = await User.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({ message: "Email déjà utilisé" });
     }
-    const user = await users.insertOne({
-      name: req.body.name,
-      email: req.body.email,
-      password: await bcrypt.hash(req.body.password, 10)
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const newUser = new User({
+      name: name,
+      email: email,
+      password: hashedPassword
     });
-    console.log("Utilisateur créé:", user);
-    res.status(201).json({ message: "Utilisateur créé", user: { id: user.insertedId, name: req.body.name, email: req.body.email } });
-  }catch (err) {
+
+    await newUser.save();
+    
+    console.log("Utilisateur créé avec Mongoose:", newUser.email);
+    
+    res.status(201).json({ 
+      message: "Utilisateur créé", 
+      user: { id: newUser._id, name: newUser.name, email: newUser.email } 
+    });
+
+  } catch (err) {
+    console.error("Erreur register:", err);
+    if (err.name === 'ValidationError') {
+      return res.status(400).json({ message: err.message });
+    }
     res.status(500).json({ message: "Erreur serveur" });
   }
 };

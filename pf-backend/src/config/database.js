@@ -1,29 +1,17 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const mongoose = require('mongoose');
 require('dotenv').config();
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PASSWORD;
-const uri = process.env.MONGODB_URI;
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  }
-});
+const uri = process.env.MONGODB_URI;
 
 const connectDB = async () => {
   try {
-    await client.connect();
-    console.log("Connected to MongoDB!");
-    return client.db("pokefinder");
+    await mongoose.connect(uri);
+    
+    console.log("Connecté à MongoDB via Mongoose !");
   } catch (error) {
-    console.error("MongoDB connection error:", error);
+    console.error("Erreur de connexion à MongoDB :", error);
     process.exit(1);
   }
 };
 
-module.exports = {
-  client,
-  connectDB
-};
+module.exports = connectDB;

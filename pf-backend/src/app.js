@@ -6,7 +6,7 @@ const { expressMiddleware } = require('@as-integrations/express5');
 const { ApolloServerPluginDrainHttpServer } = require('@apollo/server/plugin/drainHttpServer');
 const cors = require('cors');
 const http = require('http');
-const { connectDB } = require('./config/database');
+const connectDB = require('./config/database');
 const passport = require('passport');
 require('./config/passport')(passport);
 
