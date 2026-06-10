@@ -117,7 +117,7 @@
   // Délai progressif pour les colonnes
   @for $i from 1 through 7 {
     & > :nth-child(#{$i}) {
-      animation-delay: #{$i * 0.08}s;
+      animation-delay: #{$i * 0.5}s;
     }
   }
 }
