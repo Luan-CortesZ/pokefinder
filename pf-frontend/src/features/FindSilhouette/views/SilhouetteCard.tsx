@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import type { Pokemon } from "../../../models/pokemon.model";
 import "./styles/FindSilhouette.scss";
 

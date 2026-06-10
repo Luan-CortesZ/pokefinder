@@ -1,0 +1,99 @@
+.victory-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.victory-modal {
+  background: #1e2d4a;
+  border: none;
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  text-align: center;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+  animation: popIn 0.3s ease-out;
+  max-width: 380px;
+  width: 90%;
+}
+
+.victory-pokemon-img {
+  width: 120px;
+  height: 120px;
+  image-rendering: pixelated;
+}
+
+.victory-title {
+  font-size: 2rem;
+  font-weight: 900;
+  color: #43e88b;
+  margin: 0.5rem 0 0.25rem;
+  text-shadow: 0 2px 8px rgba(67, 232, 139, 0.4);
+}
+
+.victory-subtitle {
+  color: #c8dde8;
+  font-size: 1rem;
+  margin: 0 0 2rem;
+
+  strong {
+    color: #fff;
+    text-transform: capitalize;
+  }
+}
+
+.victory-actions {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.victory-btn {
+  padding: 0.65rem 1.1rem;
+  border: none;
+  border-radius: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.85;
+  }
+
+  &.primary {
+    background: #43e88b;
+    color: #050505;
+  }
+
+  &.secondary {
+    background: transparent;
+    color: #f8fbff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  from {
+    opacity: 0;
+    transform: scale(0.85) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

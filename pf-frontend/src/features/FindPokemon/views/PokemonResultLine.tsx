@@ -1,5 +1,6 @@
 import type { Pokemon } from "../../../models/pokemon.model";
 import PokemonInfoCard from "./PokemonInfoCard";
+import { verifyNumeric, verifyType } from "../utils/pokemonComparison";
 
 type PokemonResultLineProps = {
   pokemon: Pokemon;
@@ -13,24 +14,7 @@ export default function PokemonResultLine({
 }: PokemonResultLineProps) {
   if (!randomPokemon) return null;
 
-  const verifyNumeric = (
-    current: number,
-    target: number,
-  ): "green" | "red higher" | "red lower" => {
-    if (current === target) return "green";
-    return current < target ? "red higher" : "red lower";
-  };
-
-  const verifyType = (
-    current: string | undefined,
-    index: number,
-  ): "green" | "yellow" | "red" => {
-    const targetTypes = randomPokemon.types.map((t) => t.name);
-    const targetAtSlot = targetTypes[index];
-    if (current === targetAtSlot) return "green";
-    if (current && targetTypes.includes(current)) return "yellow";
-    return "red";
-  };
+  const targetTypes = randomPokemon.types.map((t) => t.name);
 
   return (
     // AJOUT de "new-guess" pour l'animation unique
@@ -39,11 +23,11 @@ export default function PokemonResultLine({
         <img src={pokemon.sprites.front_default} alt={pokemon.name} />
       </PokemonInfoCard>
 
-      <PokemonInfoCard tone={verifyType(pokemon.types[0]?.name, 0)}>
+      <PokemonInfoCard tone={verifyType(pokemon.types[0]?.name, 0, targetTypes)}>
         {pokemon.types[0]?.name}
       </PokemonInfoCard>
 
-      <PokemonInfoCard tone={verifyType(pokemon.types[1]?.name, 1)}>
+      <PokemonInfoCard tone={verifyType(pokemon.types[1]?.name, 1, targetTypes)}>
         {pokemon.types[1]?.name ?? "-"}
       </PokemonInfoCard>
 

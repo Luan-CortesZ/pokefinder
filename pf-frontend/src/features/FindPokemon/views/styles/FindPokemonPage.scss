@@ -16,35 +16,31 @@
     linear-gradient(rgba(30, 60, 70, 0.78), rgba(30, 60, 70, 0.78)),
     url("../../../../assets/images/background.jpg") center / cover;
   box-shadow: 0 18px 32px rgba(0, 0, 0, 0.25);
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  column-gap: 0.4rem;
+  row-gap: 0.45rem;
 }
 
 .pokemon-results-header,
 .pokemon-result-line {
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  // grid-template-columns: 82px repeat(6, minmax(120px, 1fr));
-  gap: 0.4rem;
+  grid-template-columns: subgrid;
   align-items: stretch;
 }
 
 .pokemon-results-header {
-  padding: 0 0.15rem 0.45rem;
   align-items: center;
   text-align: center;
   color: #f8fbff;
   font-weight: 800;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.45);
-}
-
-.pokemon-results-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
+  padding-bottom: 0.2rem;
 }
 
 .pokemon-result-line {
   border-radius: 8px;
-  padding: 0.25rem;
 }
 
 .pokemon-info-card {

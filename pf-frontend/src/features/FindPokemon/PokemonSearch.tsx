@@ -20,8 +20,9 @@ export default function PokemonSearch(props: PokemonSearchProps) {
       <Autocomplete
         value={value}
         onChange={(event: any, newValue: string | null) => {
-          setValue(newValue);
           onPokemonSelected(newValue);
+          setValue(null);
+          setInputValue('');
         }}
         inputValue={inputValue}
         onInputChange={(event, newInputValue) => {
