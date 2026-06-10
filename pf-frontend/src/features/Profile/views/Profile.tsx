@@ -1,7 +1,7 @@
 import './styles/Profile.scss'
 import Avatar from '@mui/material/Avatar';
 import { useAuth } from '../../../components/AuthContext/AuthContext';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { PokemonService } from '../../../services/pokemon.service';
 import { UserService } from '../../../services/user.service';
 import type { CapturedPokemon } from '../../../models/pokemon.model';
@@ -11,6 +11,16 @@ export default function Profile() {
   const [userPokemons, setUserPokemons] = useState<CapturedPokemon[]>([]);
   const [pokemonCount, setPokemonCount] = useState(0);
   const [latestPokemons, setLatestPokemons] = useState<CapturedPokemon[]>([]);
+
+  const shinyCount = useMemo(() => {
+    return userPokemons.filter(p => p.isShiny).length;
+  }, [userPokemons]);
+
+  const highestLevelPokemon = useMemo(() => {
+    return userPokemons.length > 0 
+      ? userPokemons.reduce((max, p) => (p.level > max.level ? p : max), userPokemons[0]) 
+      : null;
+  }, [userPokemons]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,8 +79,12 @@ export default function Profile() {
 
         <div className="profile-grid">
           <article className="panel stats-panel">
-            <h2>Captures totales</h2>
-            <p className="total-count">{userPokemons.length}/{pokemonCount}</p>
+          <h2>Statistiques du dresseur</h2>
+          <div className="stats-details">
+            <p><strong>Captures totales :</strong> <span className="total-count">{userPokemons.length} / {pokemonCount}</span></p>
+            <p><strong>Pokémons Shiny :</strong> {shinyCount}</p>
+            <p><strong>Plus haut niveau :</strong> {highestLevelPokemon ? `${highestLevelPokemon.name} (Lvl ${highestLevelPokemon.level})` : 'Aucun'}</p>
+          </div>
           </article>
 
           <article className="panel latest-panel">
